@@ -3,9 +3,7 @@ package ECOPARQUE;
 import java.util.concurrent.Semaphore;
 
 public class NadoDelfines {
-    Semaphore entrada = new Semaphore(0);
-    Semaphore solicitarPileta = new Semaphore(0);
-    Semaphore salida = new Semaphore(0);
+
     private int cambioPile = 1;
     private boolean ingreso = true;
     private int cantActualPile = 0;
