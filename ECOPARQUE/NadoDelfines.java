@@ -1,4 +1,3 @@
-package ECOPARQUE;
 
 import java.util.concurrent.Semaphore;
 
@@ -7,7 +6,6 @@ public class NadoDelfines {
     private int cambioPile = 1;
     private boolean ingreso = true;
     private int cantActualPile = 0;
-
 
     public synchronized void solPile() {
         try {
@@ -40,31 +38,30 @@ public class NadoDelfines {
             System.out.println("CAMBIO PILETA: " + cambioPile);
         }
 
-        if(cambioPile == 4 && cantActualPile == 10){
-            ingreso = false; 
+        if (cambioPile == 4 && cantActualPile == 10) {
+            ingreso = false;
         }
 
         this.notifyAll();
     }
 
-    public synchronized void comenzarFuncion(){
+    public synchronized void comenzarFuncion() {
         try {
-            while(cambioPile!= 4){
+            while (cambioPile != 4) {
                 this.wait();
             }
         } catch (Exception e) {
             // TODO: handle exception
         }
         System.out.println("Comienza funcion");
-        ingreso = false; 
+        ingreso = false;
     }
 
-    public synchronized void terminarFuncion(){
+    public synchronized void terminarFuncion() {
         System.out.println("Funcion terminada");
-        ingreso = true;  
+        ingreso = true;
         cambioPile = 1;
-        cantActualPile = 0; 
-        this.notifyAll(); 
+        cantActualPile = 0;
+        this.notifyAll();
     }
 }
-
