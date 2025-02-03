@@ -14,9 +14,8 @@ public class main {
         MundoAventura ma = new MundoAventura(); 
 
         int cap = 0;
-
-        for (int i = 0; i < colRestaurantes.length; i++) {
-            colRestaurantes[i] = new Restaurante(i, cap + 5);
+        for (int i = 1; i < 4; i++) {
+            colRestaurantes[i] = new Restaurante(i, cap + 5); //restaurante 1, capacidad 5
         }
 
 

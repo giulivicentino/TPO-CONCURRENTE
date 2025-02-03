@@ -22,9 +22,11 @@ public class Persona extends Thread {
 
     public void run() {
         
+//-------------------NADO DELFINES
         // pile.solPile(); // desp habria q agregarle q sea random lo q deciden hacer
 
-        // parte del snorkel
+
+//-------------------SNORKEL
 /* 
         try {
 
@@ -40,8 +42,8 @@ public class Persona extends Thread {
 */
 
 
-        //parte Mundo Aventura
-
+  //-------------------MUNDO AVENTURA
+/* 
         try {
           
             
@@ -73,8 +75,12 @@ public class Persona extends Thread {
 
 
         } catch (Exception e) {
-            // TODO: handle exception
+           
         }
+*/
+//-------------------RESTAURANTE
+
+
 
     }
 }
