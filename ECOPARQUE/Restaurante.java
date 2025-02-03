@@ -7,18 +7,13 @@ public class Restaurante {
     private int cantActualResto = 0;
     private int id;
     private int capacidad;
-
-    private  HashMap<Integer,int[]> restaurantes = new HashMap<>();
-    private  HashMap<Persona,boolean[]> personas = new HashMap<>();
+    private boolean pedidoEnProceso =false;
+    private  HashMap<Persona,boolean[]> personas = new HashMap<>(); // <persona1, [almorzo,merendo]>
     
-
-
-    public Restaurante() {
-        restaurantes.put(1  , new int[]{0,10}); //resto 1 , tiene capacidad 10
-        restaurantes.put(2  , new int[]{0,15});
-        restaurantes.put(3  , new int[]{0,20});
+    public Restaurante(int unId,int cantMax) {
+       id=unId;
+       capacidad=cantMax;
     }
-
 
     private Lock lockResto = new ReentrantLock(); // el q se asegure que no haya mas de un hilo tratando de entrar a la vez, como un syncronised
     private Condition fila = lockResto.newCondition();
@@ -27,41 +22,82 @@ public class Restaurante {
     private Condition filaPedidos = lockPedidos.newCondition();
     // nose si faltan mas condiciones
 
-    public void entrarRestaurante(Persona personita){ 
-      lockResto.lock();
-      
-        try {
-            while( cantActualResto+1 > capacidad){ // si al entrar se llena
-                fila.await();
+    public void entrarRestaurante(Persona personita) {
+        lockResto.lock();
+        if (!personas.containsKey(personita)) {
+            personas.put(personita, new boolean[] { false, false }); // lo agrega a la fila de ese restaurante
+            try {
+                while (cantActualResto + 1 > capacidad) { // si al entrar se llena
+                    fila.await();
+                }
+                cantActualResto++;
+                System.out.println(Thread.currentThread().getName() + " ENTRE a RESTO -" + id
+                + "- , cantActual: " + cantActualResto + " max: " + capacidad);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-            cantActualResto++;
-            System.out.println(Thread.currentThread().getName() + " entre a RESTO -"+id+"- , ahora la cant actual es: "+cantActualResto+ " y el max es "+capacidad); 
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+
         }
-    
+        lockResto.unlock();
     }
 
     public void pedirAlmuerzo(Persona personita){
-//sigue con el lock de cuando entró
-        if(!personas.get(personita)[0]){
+        lockPedidos.lock();
+        if(!personas.get(personita)[0]){ //que no haya almorzado
+            try {
+                while (pedidoEnProceso) {
+                    filaPedidos.await();
+                }
+            
+              //  System.out.println(Thread.currentThread().getName() +" almorzando EN: "+id); 
+                Thread.sleep(200);
+                pedidoEnProceso=false;
+                personas.get(personita)[0]=true;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
         }else{
-            System.out.println(Thread.currentThread().getName() +" ya almorzo, no puede repetir"); 
+           // System.out.println(Thread.currentThread().getName() +" ya almorzo, no puede repetir"); 
         }
-
-        cantActualResto--;
-        fila.signalAll();
-        lockResto.unlock();
+        pedidoEnProceso=false;
+        lockPedidos.unlock();
     }
 
     public void pedirMerienda(Persona personita){
+        lockPedidos.lock();
+        if(!personas.get(personita)[1]){ //que no haya merendado
+            try {
+                while (pedidoEnProceso) {
+                    filaPedidos.await();
+                }
+            
+                //System.out.println(Thread.currentThread().getName() +" merendando EN: "+id); 
+                Thread.sleep(200);
+                pedidoEnProceso=false;
+                personas.get(personita)[1]=true;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        personas.get(personita)[1] = true; // tacha la merienda
-        lockResto.unlock();
+        }else{
+           // System.out.println(Thread.currentThread().getName() +" ya merendo, no puede repetir"); 
+        }
+        pedidoEnProceso=false;
+        lockPedidos.unlock();
+
+        
     }
 
+    public void salirRestaurante(){
+        //para modificar la cant actual
+        lockResto.lock();        
+        cantActualResto--;
+        System.out.println(Thread.currentThread().getName() + " ME FUI de RESTO -" + id
+                        + "- , cantActual: " + cantActualResto + " max: " + capacidad);
+        fila.signalAll(); 
+        lockResto.unlock();
+    }
 
 }
 

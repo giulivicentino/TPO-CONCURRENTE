@@ -79,7 +79,25 @@ public class Persona extends Thread {
         }
 */
 //-------------------RESTAURANTE
+try {
+         
+        
+                resto.entrarRestaurante(this);    
+                resto.pedirAlmuerzo(this);
+                resto.salirRestaurante();    
+               
+                Thread.sleep(2000);// lo dejo asi para probar, pero tendria que ser que lo puedan pedir entre actividades tmb
+                
+                resto.entrarRestaurante(this);    
+                resto.pedirMerienda(this);
+                resto.salirRestaurante();    
+                
+        
 
+
+} catch (Exception e) {
+   
+}
 
 
     }
