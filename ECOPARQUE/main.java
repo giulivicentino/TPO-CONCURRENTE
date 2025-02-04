@@ -19,7 +19,7 @@ public class main {
         Laguna laguna = new Laguna(); 
         MundoAventura ma = new MundoAventura(); 
         CarreraGomones cg = new CarreraGomones(); 
-        
+        FaroMirador fa = new FaroMirador();
         //hilos personas 
         Persona[] p = new Persona[20];
         
@@ -29,10 +29,10 @@ public class main {
             Random r2 = new Random();
         int numRestoElegido = r2.nextInt(3);
         if(i%2 == 0){ 
-            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1); // siempre arranca viendo al primer
+            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1,fa); // siempre arranca viendo al primer
             // restaurante
         }else {
-            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg, 1); // siempre arranca viendo al primer
+            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg, ,fa); // siempre arranca viendo al primer
                                                                                  // restaurante
         }
            
@@ -46,7 +46,7 @@ public class main {
         AsistenteSnorkel[] asistentesSnorkel = new AsistenteSnorkel[2]; 
         ControlTirolesa ct = new ControlTirolesa(ma); 
         ControlTren ctren = new ControlTren(cg); 
-        
+        ControlFaro cFaro = new ControlFaro(fa);
         
         for(int i= 0; i < asistentesSnorkel.length; i++){
             asistentesSnorkel[i] = new AsistenteSnorkel(laguna); 

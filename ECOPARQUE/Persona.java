@@ -9,10 +9,10 @@ public class Persona extends Thread {
     private int ladoTirolesa; 
     private CarreraGomones cg; 
     private int eleccionTransporte; 
-
+    private FaroMirador fa;
     private int horarioPile;
 
-    public Persona(String n, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa, CarreraGomones c, int eleccionTransporte) {
+    public Persona(String n, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa, CarreraGomones c, int eleccionTransporte,FaroMirador faro) {
         this.pile = p;
         this.horarioPile = h;
         this.setName(n);
@@ -21,7 +21,8 @@ public class Persona extends Thread {
         this.ma = m; 
         this.ladoTirolesa = ladoTirolesa; 
         this.cg = c; 
-        this.eleccionTransporte = eleccionTransporte; 
+        this.eleccionTransporte = eleccionTransporte;
+        this.fa = faro;
     }
 
     public void run() {
@@ -42,12 +43,12 @@ public class Persona extends Thread {
             e.printStackTrace();
         }
 
-     }
-        */
+        }
+        
 
 
          //-------------------MUNDO AVENTURA
-        /* 
+         
         try {
           
             
@@ -98,7 +99,7 @@ public class Persona extends Thread {
 
         } catch (Exception e) {
 
-        }*/
+        }
         //-------------------CARRERA DE GOMONES
         try {
             switch (eleccionTransporte) {
@@ -114,6 +115,6 @@ public class Persona extends Thread {
                 }
 
         } catch (Exception e) {
-        }
+        }*/
     }
 }
