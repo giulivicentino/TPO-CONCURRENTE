@@ -5,102 +5,109 @@ public class Persona extends Thread {
     private NadoDelfines pile;
     private Restaurante resto;
     private Laguna laguna;
-    private MundoAventura ma; 
-    private int ladoTirolesa; 
-    private CarreraGomones cg; 
-    private int eleccionTransporte; 
+    private MundoAventura ma;
+    private int ladoTirolesa;
+    private CarreraGomones cg;
+    private int eleccionTransporte;
+    private int eleccionGomon;
     private FaroMirador fa;
     private int horarioPile;
 
-    public Persona(String n, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa, CarreraGomones c, int eleccionTransporte,FaroMirador faro) {
+    public Persona(String n, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa,
+            CarreraGomones c, int eleccionTransporte, int eleccionGomon, FaroMirador faro) {
         this.pile = p;
         this.horarioPile = h;
         this.setName(n);
         this.resto = res;
         this.laguna = l;
-        this.ma = m; 
-        this.ladoTirolesa = ladoTirolesa; 
-        this.cg = c; 
+        this.ma = m;
+        this.ladoTirolesa = ladoTirolesa;
+        this.cg = c;
         this.eleccionTransporte = eleccionTransporte;
+        this.eleccionGomon = eleccionGomon;
         this.fa = faro;
     }
 
     public void run() {
-        
-        //-------------------NADO DELFINES
+
+        // -------------------NADO DELFINES
         // pile.solPile(); // desp habria q agregarle q sea random lo q deciden hacer
 
+        // -------------------SNORKEL
 
-        //-------------------SNORKEL
-         
-       /* try {
+        /*
+         * try {
+         * 
+         * laguna.solicitarEquipo();
+         * Thread.sleep(2000);
+         * laguna.devolverEquipo();
+         * 
+         * } catch (InterruptedException e) {
+         * e.printStackTrace();
+         * }
+         * 
+         * }
+         * 
+         * 
+         * 
+         * //-------------------MUNDO AVENTURA
+         * 
+         * try {
+         * 
+         * 
+         * switch (ladoTirolesa) {
+         * case 1:
+         * System.out.println("p este");
+         * ma.subirTirolesa();
+         * Thread.sleep(200);
+         * ma.bajarseTirolesa();
+         * break;
+         * 
+         * case 2:
+         * System.out.println("p oeste");
+         * ma.subirTirolesa2();
+         * Thread.sleep(200);
+         * ma.bajarseTirolesa2();
+         * 
+         * 
+         * break;
+         * }
+         * 
+         * ma.usarCuerda();
+         * Thread.sleep(400);
+         * ma.dejarCuerda();
+         * 
+         * ma.saltar();
+         * Thread.sleep(200);
+         * ma.dejarSalto();
+         * 
+         * 
+         * } catch (Exception e) {
+         * 
+         * }
+         * 
+         * //-------------------RESTAURANTE
+         * try {
+         * 
+         * resto.entrarRestaurante(this);
+         * resto.pedirAlmuerzo(this);
+         * resto.salirRestaurante();
+         * 
+         * Thread.sleep(2000);// lo dejo asi para probar, pero tendria que ser que lo
+         * puedan pedir entre
+         * // actividades tmb
+         * 
+         * resto.entrarRestaurante(this);
+         * resto.pedirMerienda(this);
+         * resto.salirRestaurante();
+         * 
+         * } catch (Exception e) {
+         * 
+         * }
+         */
 
-            laguna.solicitarEquipo();
-            Thread.sleep(2000);
-            laguna.devolverEquipo();
+        // -------------------CARRERA DE GOMONES
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        }
-        
-
-
-         //-------------------MUNDO AVENTURA
-         
-        try {
-          
-            
-            switch (ladoTirolesa) {
-                case 1:
-                System.out.println("p este");
-                ma.subirTirolesa();
-                Thread.sleep(200);
-                ma.bajarseTirolesa();
-                    break;
-            
-                case 2:
-                System.out.println("p oeste");
-                ma.subirTirolesa2();
-                Thread.sleep(200);
-                ma.bajarseTirolesa2();
-                
-
-                break;
-            }
-           
-            ma.usarCuerda();
-            Thread.sleep(400);
-            ma.dejarCuerda();
-            
-            ma.saltar();
-            Thread.sleep(200);
-            ma.dejarSalto();
-
-
-        } catch (Exception e) {
-           
-        }
-        
-        //-------------------RESTAURANTE
-        try {
-
-            resto.entrarRestaurante(this);
-            resto.pedirAlmuerzo(this);
-            resto.salirRestaurante();
-
-            Thread.sleep(2000);// lo dejo asi para probar, pero tendria que ser que lo puedan pedir entre
-                       // actividades tmb
-
-            resto.entrarRestaurante(this);
-            resto.pedirMerienda(this);
-             resto.salirRestaurante();
-
-        } catch (Exception e) {
-
-        }
-        //-------------------CARRERA DE GOMONES
         try {
             switch (eleccionTransporte) {
                 case 1:
@@ -112,9 +119,32 @@ public class Persona extends Thread {
                     Thread.sleep(6000);
                     cg.dejarBici();
                     break;
-                }
+            }
+        } catch (Exception e) {
+        }
+
+        
+         try {
+            switch (eleccionGomon) {
+                case 1: // caso gomon doble
+                    if (cg.elegirGomon(true)) {
+                        cg.carrera();
+                        cg.finalizaCarrera(true);
+
+                    } else {
+                        Thread.sleep(4000);
+                    }
+                    break;
+
+                case 2: // caso gomon simple
+                    cg.elegirGomon(false);
+                    cg.carrera();
+                    cg.finalizaCarrera(false);
+                    break;
+            }
 
         } catch (Exception e) {
-        }*/
+        }
+         
     }
 }
