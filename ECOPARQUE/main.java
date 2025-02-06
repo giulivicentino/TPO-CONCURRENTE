@@ -21,7 +21,7 @@ public class main {
         CarreraGomones cg = new CarreraGomones(); 
         FaroMirador fa = new FaroMirador();
         //hilos personas 
-        Persona[] p = new Persona[20];
+        Persona[] p = new Persona[22];
         
         
 
@@ -32,9 +32,12 @@ public class main {
         boolean gomon = r3.nextBoolean();
         if(i%2 == 0){ 
             p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1,gomon,fa); // siempre arranca viendo al primer
+            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1,1,fa); // siempre arranca viendo al primer
             // restaurante
         }else {
             p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg,2,gomon,fa); // siempre arranca viendo al primer restaurante
+            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg,2,2 ,fa); // siempre arranca viendo al primer
+                                                                                 // restaurante
         }
            
         }
@@ -65,10 +68,13 @@ public class main {
      //ctren.start();
         cFaro.start();
 
-        //comienzo de hilos personas
+     // ct.start();
+     
+     ctren.start();
+
+     //comienzo de hilos personas
         for(int i=0; i< p.length; i++){
             p[i].start();
         }
-        ct.start();
     }
 }
