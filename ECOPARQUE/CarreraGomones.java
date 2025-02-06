@@ -124,6 +124,7 @@ public class CarreraGomones {
 
     public void carrera() throws InterruptedException, BrokenBarrierException{
         try {
+            //Visitantes esperan para correr
             barreraInicio.await(5, TimeUnit.SECONDS);
             
             System.out.println("EN CARRERA");
@@ -131,12 +132,13 @@ public class CarreraGomones {
             System.out.println("FINALIZA CARRERA");
 
         } catch (TimeoutException e) {
+            //Si pasa determinado tiempo sin poder conseguir la cantidad necesaria, el visitante se vá
             System.out.println("Un visitante se cansó de esperar para la carrera");
         }
 
     }
 
-    public synchronized void finalizaCarrera(boolean eleccion) {
+    public synchronized void devolverGomon(boolean eleccion) {
 
         int i = 1; // simulacion gomon
 
