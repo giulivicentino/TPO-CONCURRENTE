@@ -3,6 +3,8 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -30,9 +32,9 @@ public class CarreraGomones {
         esperaControlTren = accesoTren.newCondition();
         semBicis = new Semaphore(15, true);
 
-        for(int i = 0; i < 5; i++){ 
-            gomonesDobles.add(i); 
-            gomonesIndivuales.add(i); 
+        for (int i = 0; i < 5; i++) {
+            gomonesDobles.add(i);
+            gomonesIndivuales.add(i);
         }
 
     }
@@ -85,7 +87,8 @@ public class CarreraGomones {
     }
 
     public void dejarBici() {
-        System.out.println("El visitante " +Thread.currentThread().getName()+ " llegó a la carreras de gomones con bicicleta");
+        System.out.println(
+                "El visitante " + Thread.currentThread().getName() + " llegó a la carreras de gomones con bicicleta");
         semBicis.release();
     }
 
@@ -103,8 +106,9 @@ public class CarreraGomones {
 
             } else {
                 gomonesDobles.take(); // simulacion de espera de compañero para gomon doble
-                System.out.println("La persona " + Thread.currentThread().getName() + " agarra un gomon doble, espera compa");
-                int i = 1;  //simulacion gomon 
+                System.out.println(
+                        "La persona " + Thread.currentThread().getName() + " agarra un gomon doble, espera compa");
+                int i = 1; // simulacion gomon
                 esperaCompanero.add(i);
                 corredor = false;
             }
@@ -118,15 +122,23 @@ public class CarreraGomones {
         return corredor;
     }
 
-    public void carrera() throws InterruptedException, BrokenBarrierException {
-        barreraInicio.await();
-        System.out.println("EN CARRERA");
-        Thread.sleep(2000);
+    public void carrera() throws InterruptedException, BrokenBarrierException{
+        try {
+            barreraInicio.await(5, TimeUnit.SECONDS);
+            
+            System.out.println("EN CARRERA");
+            Thread.sleep(2000);
+            System.out.println("FINALIZA CARRERA");
+
+        } catch (TimeoutException e) {
+            System.out.println("Un visitante se cansó de esperar para la carrera");
+        }
+
     }
 
     public synchronized void finalizaCarrera(boolean eleccion) {
-        System.out.println("FINALIZA CARRERA");
-        int i = 1; //simulacion gomon
+
+        int i = 1; // simulacion gomon
 
         if (eleccion) {
             gomonesDobles.add(i);

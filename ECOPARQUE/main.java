@@ -21,7 +21,7 @@ public class main {
         CarreraGomones cg = new CarreraGomones(); 
         FaroMirador fa = new FaroMirador();
         //hilos personas 
-        Persona[] p = new Persona[100];
+        Persona[] p = new Persona[22];
         
         
 

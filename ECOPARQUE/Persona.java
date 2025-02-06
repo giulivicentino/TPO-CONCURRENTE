@@ -129,7 +129,7 @@ public class Persona extends Thread {
                 case 1: // caso gomon doble
                     if (cg.elegirGomon(true)) {
                         cg.carrera();
-                        cg.finalizaCarrera(true);
+                        cg.devolverGomon(true);
 
                     } else {
                         Thread.sleep(4000);
@@ -139,7 +139,7 @@ public class Persona extends Thread {
                 case 2: // caso gomon simple
                     cg.elegirGomon(false);
                     cg.carrera();
-                    cg.finalizaCarrera(false);
+                    cg.devolverGomon(false);
                     break;
             }
 
