@@ -8,11 +8,12 @@ public class Persona extends Thread {
     private MundoAventura ma; 
     private int ladoTirolesa; 
     private CarreraGomones cg; 
-    private int eleccionTransporte; 
+    private int eleccionTransporte;
+    private boolean gomonSimple; 
     private FaroMirador fa;
     private int horarioPile;
 
-    public Persona(String n, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa, CarreraGomones c, int eleccionTransporte,FaroMirador faro) {
+    public Persona(String n, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa, CarreraGomones c, int eleccionTransporte,boolean gomonSimple,FaroMirador faro) {
         this.pile = p;
         this.horarioPile = h;
         this.setName(n);
@@ -22,6 +23,7 @@ public class Persona extends Thread {
         this.ladoTirolesa = ladoTirolesa; 
         this.cg = c; 
         this.eleccionTransporte = eleccionTransporte;
+        this.gomonSimple=gomonSimple;
         this.fa = faro;
     }
 
@@ -99,9 +101,29 @@ public class Persona extends Thread {
 
         } catch (Exception e) {
 
-        }
-        //-------------------CARRERA DE GOMONES
+        }*/
         try {
+            fa.ingresar();
+            boolean pasa1 = fa.esperarTurno();
+            if(pasa1){
+                fa.subirTobogan1();
+                Thread.sleep(3000);
+                fa.bajarTobogan1();
+            }else{
+                fa.subirTobogan2();
+                Thread.sleep(3000);
+                fa.bajarTobogan2();
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+
+
+
+
+
+        //-------------------CARRERA DE GOMONES
+       /*  try {
             switch (eleccionTransporte) {
                 case 1:
                     cg.subirTren();
@@ -115,6 +137,8 @@ public class Persona extends Thread {
                 }
 
         } catch (Exception e) {
-        }*/
+        }
+*/
+
     }
 }

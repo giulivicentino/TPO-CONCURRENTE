@@ -73,4 +73,12 @@ public void dejarBici(){
     semBicis.release();
 }
 
+public void subirGomonSimple(){
+
+}
+
+public void subirGomonDoble(){
+    
+}
+
 }
