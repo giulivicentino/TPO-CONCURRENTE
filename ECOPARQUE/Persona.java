@@ -29,7 +29,7 @@ public class Persona extends Thread {
     }
 
     public void run() {
-
+System.out.println("El visitante " + Thread.currentThread().getName() + " arrancaaaa");
         // -------------------NADO DELFINES
         // pile.solPile(); // desp habria q agregarle q sea random lo q deciden hacer
 
@@ -104,7 +104,7 @@ public class Persona extends Thread {
          * } catch (Exception e) {
          * 
          * }
-         */
+         
 
         // -------------------CARRERA DE GOMONES
 
@@ -145,8 +145,21 @@ public class Persona extends Thread {
 
         } catch (Exception e) {
         }
-
-         
+*/
+//-------------------FARO MIRADOR
+try {
+    
+    fa.ingresar();
+    boolean opcion = fa.esperarTurno(); 
+    System.out.println(" aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + Thread.currentThread().getName() + " que me devolvio esperar turno??  "+opcion);
+   
+        fa.subirTobogan1(opcion);
+        Thread.sleep(3000);
+        fa.bajarTobogan1(opcion);
+    
+} catch (Exception e) {
+    // TODO: handle exception
+}
 
     }
 }

@@ -21,21 +21,17 @@ public class main {
         CarreraGomones cg = new CarreraGomones(); 
         FaroMirador fa = new FaroMirador();
         //hilos personas 
-        Persona[] p = new Persona[22];
+        Persona[] p = new Persona[5];
         
         
 
         for (int i = 0; i < p.length; i++) {
             Random r2 = new Random();
-            Random r3 = new Random();
         int numRestoElegido = r2.nextInt(3);
-        boolean gomon = r3.nextBoolean();
         if(i%2 == 0){ 
-            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1,gomon,fa); // siempre arranca viendo al primer
             p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1,1,fa); // siempre arranca viendo al primer
             // restaurante
         }else {
-            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg,2,gomon,fa); // siempre arranca viendo al primer restaurante
             p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg,2,2 ,fa); // siempre arranca viendo al primer
                                                                                  // restaurante
         }
@@ -57,7 +53,7 @@ public class main {
         } 
 
         //comienzo de hilos controles        
-      //  cp.start();
+      //  cp.start(); //control pileta
 
       /* 
         for(int i= 0; i < asistentesSnorkel.length; i++){
@@ -65,12 +61,9 @@ public class main {
         } 
      */
 
-     //ctren.start();
-        cFaro.start();
-
-     // ct.start();
-     
-     ctren.start();
+     // ct.start(); //control tirolesa
+     //ctren.start(); // control tren 
+        cFaro.start(); //control faro
 
      //comienzo de hilos personas
         for(int i=0; i< p.length; i++){
