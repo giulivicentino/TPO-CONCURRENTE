@@ -150,12 +150,13 @@ System.out.println("El visitante " + Thread.currentThread().getName() + " arranc
 try {
     
     fa.ingresar();
+    fa.avisaControl(); //despierto al control para que me diga a cual voy
     boolean opcion = fa.esperarTurno(); 
-    System.out.println(" aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" + Thread.currentThread().getName() + " que me devolvio esperar turno??  "+opcion);
+    System.out.println(" aaaaaaaa" + Thread.currentThread().getName() + " PASO POR 1???  "+opcion);
    
-        fa.subirTobogan1(opcion);
-        Thread.sleep(3000);
-        fa.bajarTobogan1(opcion);
+        fa.subirTobogan(opcion);
+       // Thread.sleep(1000);
+       // fa.bajarTobogan1(opcion);
     
 } catch (Exception e) {
     // TODO: handle exception
