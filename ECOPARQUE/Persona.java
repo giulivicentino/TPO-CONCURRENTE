@@ -1,4 +1,8 @@
 import java.util.Random;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class Persona extends Thread {
     // todas las actividades que podría realizar
@@ -12,8 +16,9 @@ public class Persona extends Thread {
     private int eleccionGomon;
     private FaroMirador fa;
     private int horarioPile;
+    private Colectivo cole;
 
-    public Persona(String n, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa,
+    public Persona(String n,Colectivo cole, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa,
             CarreraGomones c, int eleccionTransporte, int eleccionGomon, FaroMirador faro) {
         this.pile = p;
         this.horarioPile = h;
@@ -26,9 +31,37 @@ public class Persona extends Thread {
         this.eleccionTransporte = eleccionTransporte;
         this.eleccionGomon = eleccionGomon;
         this.fa = faro;
-    }
+        this.cole=cole;
+            }
 
     public void run() {
+        boolean porCole=true;
+       // Random r = new Random();
+        //boolean porCole = r.nextBoolean();
+
+        if(porCole){
+            System.out.println("La persona: "+Thread.currentThread().getName().toString()+" se dirige a la fila del colectivo");
+            try {
+                
+                System.out.println("La persona: "+Thread.currentThread().getName().toString()+" SUBIO al colectivo");
+                boolean cole1=cole.subirCole();
+                Thread.sleep(3000);
+                
+                    cole.bajarCole(cole1);
+                
+                System.out.println("La persona: "+Thread.currentThread().getName().toString()+" llega a destino");
+               
+            } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+
+
+            } 
+        }else{
+            System.out.println("La persona: "+Thread.currentThread().getName().toString()+" accede de manera particular");
+        }
+
+
 
         // -------------------NADO DELFINES
         // pile.solPile(); // desp habria q agregarle q sea random lo q deciden hacer
@@ -104,7 +137,7 @@ public class Persona extends Thread {
          * } catch (Exception e) {
          * 
          * }
-         */
+        
 
         // -------------------CARRERA DE GOMONES
 
@@ -145,7 +178,7 @@ public class Persona extends Thread {
 
         } catch (Exception e) {
         }
-
+ */
          
 
     }

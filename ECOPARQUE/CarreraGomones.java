@@ -149,12 +149,4 @@ public class CarreraGomones {
         }
     }
 
-public void subirGomonSimple(){
-
-}
-
-public void subirGomonDoble(){
-    
-}
-
 }
