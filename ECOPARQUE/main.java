@@ -8,9 +8,10 @@ public class main {
     public static void main(String[] args) {
         
         //recursos compartidos 
-
+          
         NadoDelfines nd = new NadoDelfines();
-        
+        Tiempo t = new Tiempo(9, 0);
+
         Restaurante[] colRestaurantes = new Restaurante[3];
         colRestaurantes[0] = new Restaurante(1, 2);
         colRestaurantes[1] = new Restaurante(2, 5);
@@ -21,7 +22,7 @@ public class main {
         CarreraGomones cg = new CarreraGomones(); 
         FaroMirador fa = new FaroMirador();
         //hilos personas 
-        Persona[] p = new Persona[5];
+        Persona[] p = new Persona[200];
         
         
 
@@ -29,10 +30,10 @@ public class main {
             Random r2 = new Random();
         int numRestoElegido = r2.nextInt(3);
         if(i%2 == 0){ 
-            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1,1,fa); // siempre arranca viendo al primer
+            p[i] = new Persona("persona " + (i),t, nd, i, colRestaurantes[numRestoElegido], laguna, ma, 1, cg, 1,1,fa); // siempre arranca viendo al primer
             // restaurante
         }else {
-            p[i] = new Persona("persona " + (i), nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg,2,2 ,fa); // siempre arranca viendo al primer
+            p[i] = new Persona("persona " + (i),t, nd, i, colRestaurantes[numRestoElegido], laguna, ma, 2, cg,2,2 ,fa); // siempre arranca viendo al primer
                                                                                  // restaurante
         }
            
@@ -42,6 +43,7 @@ public class main {
 
 
         //hilos controles 
+        ControlTiempo tiempo = new ControlTiempo(t, nd); 
         ControlPileta cp = new ControlPileta(nd);
         AsistenteSnorkel[] asistentesSnorkel = new AsistenteSnorkel[2]; 
         ControlTirolesa ct = new ControlTirolesa(ma); 
@@ -52,8 +54,10 @@ public class main {
             asistentesSnorkel[i] = new AsistenteSnorkel(laguna); 
         } 
 
-        //comienzo de hilos controles        
-      //  cp.start(); //control pileta
+        //comienzo de hilos controles    
+    
+      tiempo.start();
+      cp.start(); //control pileta
 
       /* 
         for(int i= 0; i < asistentesSnorkel.length; i++){
@@ -63,7 +67,7 @@ public class main {
 
      // ct.start(); //control tirolesa
      //ctren.start(); // control tren 
-        cFaro.start(); //control faro
+     //  cFaro.start(); //control faro
 
      //comienzo de hilos personas
         for(int i=0; i< p.length; i++){
