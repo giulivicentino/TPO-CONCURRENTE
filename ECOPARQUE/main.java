@@ -9,6 +9,7 @@ public class main {
     public static void main(String[] args) {
         
         //recursos compartidos 
+        
         NadoDelfines nd = new NadoDelfines();
         Restaurante[] colRestaurantes = new Restaurante[3];
         colRestaurantes[0] = new Restaurante(1, 2);
@@ -19,19 +20,16 @@ public class main {
         CarreraGomones cg = new CarreraGomones(); 
         FaroMirador fa = new FaroMirador();
         Colectivo cole = new Colectivo();
+        Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa);
         // hilos personas
         Persona[] p = new Persona[20];
 
         for (int i = 0; i < p.length; i++) {
-            Random r2 = new Random();
-            int numResto = r2.nextInt(3);
-            if (i % 2 == 0) {
-                p[i] = new Persona("persona " + (i),cole, nd, i, colRestaurantes[numResto], laguna, ma, 1, cg, 1, 1,fa);
-            } else {
-                p[i] = new Persona("persona " + (i),cole, nd, i, colRestaurantes[numResto], laguna, ma, 2, cg, 2, 2,fa);
-            }
-
+                p[i] = new Persona("persona " + (i),cole, ecoParque);
         }
+        
+        
+        
         //hilos controles 
         ControlPileta cp = new ControlPileta(nd);
         AsistenteSnorkel[] asistentesSnorkel = new AsistenteSnorkel[2]; 
@@ -42,7 +40,7 @@ public class main {
         for(int i= 0; i < asistentesSnorkel.length; i++){
             asistentesSnorkel[i] = new AsistenteSnorkel(laguna); 
         } 
-/* 
+
         // comienzo de hilos controles
         cp.start(); // control pileta
         for (int i = 0; i < asistentesSnorkel.length; i++) {
@@ -51,7 +49,7 @@ public class main {
         ct.start(); // control tirolesa
         ctren.start(); // control tren
         cFaro.start(); // control faro
-*/
+
         // comienzo de hilos personas
         for (int i = 0; i < p.length; i++) {
             p[i].start();
