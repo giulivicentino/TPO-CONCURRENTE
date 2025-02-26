@@ -119,7 +119,7 @@ public class Persona extends Thread {
 
                                 case 2:
                                     permisoAcceso = cg.subirBici();
-                                    Thread.sleep(600);
+                                    Thread.sleep(1000);
                                     cg.dejarBici(permisoAcceso);
                                     break;
                             }
@@ -127,6 +127,7 @@ public class Persona extends Thread {
                         }
                         if (permisoAcceso) {
                             try {
+                                Thread.sleep(100);
                                 switch (eleccionGomon) {
                                     case 1: // caso gomon doble
                                         if (cg.elegirGomon(true)) {

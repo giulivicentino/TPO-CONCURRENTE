@@ -10,7 +10,7 @@ public class ControlTiempo extends Thread{
     public void run(){
         try {
             while(true){
-                Thread.sleep(100);  //simulacion de tiempo para un minuto
+                Thread.sleep(300);  //simulacion de tiempo para un minuto
                 tiempo.aumentarMinuto(); 
                 
                 //Control del tiempo para las funciones de nado de delfines

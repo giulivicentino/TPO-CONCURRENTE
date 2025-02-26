@@ -12,9 +12,8 @@ public class CarreraGomones {
     private int cantidadSubidoTren;
     private boolean destino = false;
     private boolean accesoTren = true;
-    private boolean accesoCarrera = true; 
-    private boolean accesoBici = true; 
-    private boolean accesoTrenControl = true; 
+    private boolean accesoBici = true;
+    private boolean accesoTrenControl = true;
     private Semaphore semBicis;
     private final int cantidadTotalCarrera = 5;
     private int espaciosOcupadosTren;
@@ -50,17 +49,17 @@ public class CarreraGomones {
                 System.out.println("EL visitante " + Thread.currentThread().getName()
                         + " se subió al tren, cantidad de personas subidas al tren; " + cantidadSubidoTren);
                 this.notifyAll();
-            }else{
-                accesoTren = false; 
+            } else {
+                accesoTren = false;
             }
         } catch (Exception e) {
         }
 
-        return accesoTren; 
+        return accesoTren;
     }
 
     public synchronized void bajarTren(boolean acceso) {
-        if(acceso){
+        if (acceso) {
             try {
                 while (!destino) {
                     this.wait();
@@ -68,8 +67,8 @@ public class CarreraGomones {
                 espaciosOcupadosTren++;
                 this.notifyAll();
 
-        } catch (Exception e) {
-        }
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -82,16 +81,16 @@ public class CarreraGomones {
             }
             if (t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)) {
                 System.out.println("ARRANCÓ EL TREN");
-            }else{
-                accesoTrenControl = false; 
+            } else {
+                accesoTrenControl = false;
             }
         } catch (Exception e) {
         }
-        return accesoTrenControl; 
+        return accesoTrenControl;
     }
 
     public synchronized void finalizarRecorridoTren(boolean acceso) {
-        if(acceso){
+        if (acceso) {
             System.out.println("EL TREN LLEGÓ A LA CARRERA DE GOMONES");
             destino = true;
             this.notifyAll();
@@ -99,21 +98,21 @@ public class CarreraGomones {
     }
 
     public synchronized void vueltaTren(boolean acceso) {
-        if(acceso){
+        if (acceso) {
             try {
                 while (espaciosOcupadosTren < cantidadTren) {
                     this.wait();
                 }
-                    System.out.println("EL TREN SE ENCUENTRA DISPONIBLE");
-                    espaciosOcupadosTren = 0;
-                    cantidadSubidoTren = 0;
-                    destino = false;
-                    this.notifyAll();
-                
+                System.out.println("EL TREN SE ENCUENTRA DISPONIBLE");
+                espaciosOcupadosTren = 0;
+                cantidadSubidoTren = 0;
+                destino = false;
+                this.notifyAll();
+
             } catch (Exception e) {
             }
         }
-        
+
     }
 
     // Visitantes que eligen bicicletas
@@ -123,12 +122,12 @@ public class CarreraGomones {
             if (t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)) {
                 semBicis.acquire();
                 System.out.println("El visitante " + Thread.currentThread().getName() + " tomó una bici");
-            }else{
-                accesoBici = false; 
+            } else {
+                accesoBici = false;
             }
         } catch (InterruptedException e) {
         }
-        return accesoBici; 
+        return accesoBici;
     }
 
     public void dejarBici(boolean permiso) {
@@ -144,52 +143,49 @@ public class CarreraGomones {
 
     public boolean elegirGomon(boolean eleccionGomon) throws InterruptedException {
         boolean corredor = true;
-
-        if (eleccionGomon) {
-            if (t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)) {
+        if (t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)) {
+            if (eleccionGomon) {
                 // eleccion gomon doble
                 if (!esperaCompanero.isEmpty()) {
                     // condicion hay personas esperando
                     esperaCompanero.take();
                     System.out.println("Gomon doble preparado");
                     corredor = true;
-                }else {
+                } else {
                     gomonesDobles.take(); // simulacion de espera de compañero para gomon doble
+                    if(t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)){ //condicion de visitante esperando gomon pero la actividad ya cerró
                     System.out.println(
-                            "La persona " + Thread.currentThread().getName() + " agarra un gomon doble, espera compañero");
+                            "La persona " + Thread.currentThread().getName()
+                                    + " agarra un gomon doble, espera compañero");
                     int i = 1; // simulacion gomon
                     esperaCompanero.add(i);
                     corredor = false;
-               }
-            }else{
-                accesoCarrera = false; 
-            }
-        } else {
-            if (t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)) {
+                    }
+                }
+
+            } else {
                 // eleccion gomon simple
                 gomonesIndivuales.take();
-                System.out.println("La persona " + Thread.currentThread().getName() + " agarra un gomon individual");
-                corredor = true;
-            }else {
-                accesoCarrera = false; 
+                if(t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)){ //condicion de visitante esperando gomon pero la actividad ya cerró
+                    System.out.println("La persona " + Thread.currentThread().getName() + " agarra un gomon individual");
+                    corredor = true;
+                }
             }
 
-        }
-
+        } 
         return corredor;
     }
 
+
     public void carrera() throws InterruptedException, BrokenBarrierException {
-        if(accesoCarrera){
+        if (t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)) {
             try {
                 // Visitantes esperan para correr
                 barreraInicio.await(5, TimeUnit.SECONDS);
-                if (t.getHora() < 10 || (t.getHora() == 10 && t.getMinuto() < 40)) {
                     System.out.println("EN CARRERA");
-                    Thread.sleep(200);
+                    Thread.sleep(600);
                     System.out.println("FINALIZA CARRERA");
-                }
-    
+
             } catch (TimeoutException e) {
                 // Si pasa determinado tiempo sin poder conseguir la cantidad necesaria, el
                 // visitante se vá
@@ -200,14 +196,15 @@ public class CarreraGomones {
     }
 
     public synchronized void devolverGomon(boolean eleccion) {
-        if(accesoCarrera){
-            int i = 1; // simulacion gomon
-            if (eleccion) {
-                gomonesDobles.add(i);
-            } else {
-                gomonesIndivuales.add(i);
-            }   
+
+        int i = 1; // simulacion gomon
+        if (eleccion) {
+            gomonesDobles.add(i);
+        } else {
+            gomonesIndivuales.add(i);
+
         }
+        System.out.println("Visitante se retira");
     }
 
 }
