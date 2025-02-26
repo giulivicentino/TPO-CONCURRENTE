@@ -34,8 +34,21 @@ public class Persona extends Thread {
         }
         
         // se cambia el eleccion aleatorio hasta que un numero salga (6) que determine que ya se quiere ir
+
+        Random r1 = new Random();//2
+        int eleccionResto= r1.nextInt(0,3);
+        
+        Random r3 = new Random();//3
+        int ladoTirolesa = r3.nextInt(1,2);
+        
+        Random r4 = new Random();// 4
+        int eleccionTransporte= r4.nextInt(1,2);
+
+        Random r5 = new Random();//4
+        int eleccionGomon= r5.nextInt(1,2);
+
         try {
-            parque.realizarActividad(1, this);
+            parque.realizarActividad(1, this,eleccionResto,ladoTirolesa,eleccionTransporte,eleccionGomon);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

@@ -24,7 +24,7 @@ public class Parque {
 
 
 
-    public void realizarActividad(int eleccion, Persona visitante)throws InterruptedException {
+    public void realizarActividad(int eleccion, Persona visitante, int eleccionResto,int ladoTirolesa, int eleccionTransporte, int eleccionGomon)throws InterruptedException {
         //if (horarioPermitido) { // esto es con reloj
             switch (eleccion) {
                 case 0:// -------------------NADO DELFINES
@@ -40,11 +40,9 @@ public class Parque {
                 case 2:
                     //-------------------RESTAURANTE
           try {
-            Random r1 = new Random();
-            int eleccionResto= r1.nextInt(0,3);
+           
             Restaurante restaurante = resto[eleccionResto];
 
-          
             restaurante.entrarRestaurante(visitante);
             restaurante.pedirAlmuerzo(visitante);
             restaurante.salirRestaurante();
@@ -61,8 +59,7 @@ public class Parque {
           //-------------------MUNDO AVENTURA
           
      try {
-         Random r3 = new Random();
-         int ladoTirolesa = r3.nextInt(1,2);
+        
         switch (ladoTirolesa) {
             case 1:
                 System.out.println("p este");
@@ -86,8 +83,7 @@ public class Parque {
                    
 
         // -------------------CARRERA DE GOMONES
-        Random r4 = new Random();
-         int eleccionTransporte= r4.nextInt(1,2);
+       
         try {
             switch (eleccionTransporte) {
                 case 1:
@@ -103,8 +99,6 @@ public class Parque {
         } catch (Exception e) {
         }
 
-        Random r5 = new Random();
-        int eleccionGomon= r4.nextInt(1,2);
          try {
             switch (eleccionGomon) {
                 case 1: // caso gomon doble
