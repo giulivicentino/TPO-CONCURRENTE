@@ -1,16 +1,19 @@
-public class ControlTren extends Thread{
-    private CarreraGomones cg; 
+public class ControlTren extends Thread {
+    private CarreraGomones cg;
+    private boolean permiso;
 
-    public ControlTren(CarreraGomones c){
-        this.cg = c; 
+    public ControlTren(CarreraGomones c) {
+        this.cg = c;
     }
 
-    public void run(){
+    public void run() {
         try {
-            while(true){
-            cg.arrancarTren();
-            Thread.sleep(2000);
-            cg.finalizarRecorridoTren();
+            while (true) {
+                permiso = cg.arrancarTren();
+                Thread.sleep(300);
+                cg.finalizarRecorridoTren(permiso);
+                Thread.sleep(300);
+                cg.vueltaTren(permiso);
             }
         } catch (Exception e) {
             // TODO: handle exception

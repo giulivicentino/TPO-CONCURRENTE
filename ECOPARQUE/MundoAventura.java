@@ -7,7 +7,7 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
     private int cantSaltos;
     private int cuerda;
     private int cantEsperandoLado1;
-    private int cantEsperandoLado2; 
+    private int cantEsperandoLado2;
     private int cantTirolesas;
     private Lock accesoTirolesa;
     private Lock accesoCuerda;
@@ -16,12 +16,13 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
     private Condition colaTirolesa2; // representa el otro lado de la tirolesa
     private Condition colaSalto;
     private Condition colaCuerda;
-    Semaphore semControl = new Semaphore(0); 
+    Semaphore semControl = new Semaphore(0);
+    Tiempo t;
 
-    public MundoAventura() {
+    public MundoAventura(Tiempo time) {
         this.cantSaltos = 2;
         this.cantTirolesas = 2;
-        this.cuerda = 1; 
+        this.cuerda = 1;
         this.accesoTirolesa = new ReentrantLock(true);
         this.accesoCuerda = new ReentrantLock(true);
         this.accesoSalto = new ReentrantLock(true);
@@ -29,9 +30,10 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
         colaTirolesa2 = accesoTirolesa.newCondition();
         colaCuerda = accesoCuerda.newCondition();
         colaSalto = accesoSalto.newCondition();
+        this.t = time;
     }
 
-    // Tirolesa
+    // TIROLESA
 
     public void subirTirolesa() {
         try {
@@ -40,10 +42,14 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
             while (cantTirolesas == 0) {
                 colaTirolesa1.await();
             }
-            cantTirolesas--;
-            cantEsperandoLado1--;
-            System.out.println("La persona " + Thread.currentThread().getName()
-                    + " se encuentra utilizando la tirolesa de ESTE a OESTE, tirolesas disponibles: " + cantTirolesas);
+            if (t.verificarHora()) {
+                cantTirolesas--;
+                cantEsperandoLado1--;
+                System.out.println("La persona " + Thread.currentThread().getName()
+                        + " se encuentra utilizando la tirolesa de ESTE a OESTE, tirolesas disponibles: "
+                        + cantTirolesas);
+            }
+
         } catch (InterruptedException e) {
 
         } finally {
@@ -51,7 +57,6 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
         }
     }
 
-    
     public void subirTirolesa2() {
         try {
             accesoTirolesa.lock();
@@ -59,10 +64,14 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
             while (cantTirolesas == 0) {
                 colaTirolesa1.await();
             }
-            cantTirolesas--;
-            cantEsperandoLado2--;
-            System.out.println("La persona " + Thread.currentThread().getName()
-                    + " se encuentra utilizando la tirolesa de OESTE a ESTE, tirolesas disponibles: " + cantTirolesas);
+            if (t.verificarHora()) {
+                cantTirolesas--;
+                cantEsperandoLado2--;
+                System.out.println("La persona " + Thread.currentThread().getName()
+                        + " se encuentra utilizando la tirolesa de OESTE a ESTE, tirolesas disponibles: "
+                        + cantTirolesas);
+            }
+
         } catch (InterruptedException e) {
 
         } finally {
@@ -72,60 +81,62 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
 
     public void bajarseTirolesa() {
         accesoTirolesa.lock();
-        cantTirolesas++;
-        System.out.println("La persona " + Thread.currentThread().getName()
-                + " se bajó de la tirolesa de ESTE a OESTE, tirolesas disponibles: " + cantTirolesas);
+        if (t.verificarHora()) {
+            cantTirolesas++;
+            System.out.println("La persona " + Thread.currentThread().getName()
+                    + " se bajó de la tirolesa de ESTE a OESTE, tirolesas disponibles: " + cantTirolesas);
 
-        if (cantEsperandoLado2 > 0) {
-            System.out.println("entra");
-            colaTirolesa2.signalAll();
-        } else { 
-            System.out.println("LADO OESTE VACIO");
-            semControl.release();
+            if (cantEsperandoLado2 > 0) {
+                colaTirolesa2.signalAll();
+            } else {
+                System.out.println("LADO OESTE VACIO");
+                semControl.release();
+            }
         }
         accesoTirolesa.unlock();
     }
 
     public void bajarseTirolesa2() {
         accesoTirolesa.lock();
-        cantTirolesas++;
-        System.out.println("La persona " + Thread.currentThread().getName()
-                + " se bajó de la tirolesa de OESTE a ESTE, tirolesas disponibles: " + cantTirolesas);
+        if (t.verificarHora()) {
+            cantTirolesas++;
+            System.out.println("La persona " + Thread.currentThread().getName()
+                    + " se bajó de la tirolesa de OESTE a ESTE, tirolesas disponibles: " + cantTirolesas);
 
-        if (cantEsperandoLado1 > 0) {
-            colaTirolesa1.signalAll();
-        } else {
-            System.out.println("LADO ESTE VACIO");
-            semControl.release();
+            if (cantEsperandoLado1 > 0) {
+                colaTirolesa1.signalAll();
+            } else {
+                System.out.println("LADO ESTE VACIO");
+                semControl.release();
+            }
         }
         accesoTirolesa.unlock();
     }
 
-    
-    public void verficarTirolesa() {  //metodo del control de la tirolesa
+    public void verficarTirolesa() { // metodo del control de la tirolesa
         try {
             semControl.acquire();
             System.out.println("paso");
-            if(cantEsperandoLado1 > 0){
+            if (cantEsperandoLado1 > 0) {
                 System.out.println("TIROLESA VA DE ESTE A OESTE");
-            }else{
+            } else {
                 System.out.println("TIROLESA VA DE OESTE A ESTE");
             }
 
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
 
     }
 
-    public void llevarTirolesa(){ //metodo del control de la tirolesa
+    public void llevarTirolesa() { // metodo del control de la tirolesa
         accesoTirolesa.lock();
-        cantTirolesas++; 
+        cantTirolesas++;
         colaTirolesa1.signalAll();
         colaTirolesa2.signalAll();
         accesoTirolesa.unlock();
     }
 
-
-    //CUERDA 
+    // CUERDA
 
     public void usarCuerda(){
         accesoCuerda.lock();
@@ -133,8 +144,10 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
                 while(cuerda < 1){
                 colaCuerda.await();
                 }
-                cuerda--; 
-                System.out.println("La persona "+Thread.currentThread().getName()+" se encuentra usando la cuerda");
+                if(t.verificarHora()){
+                    cuerda--; 
+                    System.out.println("La persona "+Thread.currentThread().getName()+" se encuentra usando la cuerda");
+                }
             } catch (InterruptedException e) {
             }finally{
                 accesoCuerda.unlock();
@@ -143,12 +156,15 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
 
     public void dejarCuerda(){
         accesoCuerda.lock();
-        System.out.println("La persona "+Thread.currentThread().getName()+" dejó de usar la cuerda");
-        cuerda++; 
-        colaCuerda.signalAll();
+        if(t.verificarHora()){
+            System.out.println("La persona "+Thread.currentThread().getName()+" dejó de usar la cuerda");
+            cuerda++;
+            colaCuerda.signalAll();
+        }
         accesoCuerda.unlock();
     }
 
+    // SALTO
 
     public void saltar(){
         accesoSalto.lock();
@@ -156,8 +172,10 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
             while(cantSaltos == 0){
                 colaSalto.await();
             }
-            cantSaltos--; 
-            System.out.println("La persona "+Thread.currentThread().getName()+" está por saltar");
+            if(t.verificarHora()){
+                cantSaltos--; 
+                System.out.println("La persona "+Thread.currentThread().getName()+" está por saltar");
+            }
         } catch (Exception e) {
             // TODO: handle exception
         }finally{
@@ -165,14 +183,14 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
         }
     }
 
-
     public void dejarSalto(){
         accesoSalto.lock();
-        System.out.println("La persona "+Thread.currentThread().getName()+" acaba de saltar");
-        cantSaltos++; 
-        colaSalto.signalAll();
+        if(t.verificarHora()){
+            System.out.println("La persona "+Thread.currentThread().getName()+" acaba de saltar");
+            cantSaltos++; 
+            colaSalto.signalAll();
+        }
         accesoSalto.unlock();
     }
-
 
 }
