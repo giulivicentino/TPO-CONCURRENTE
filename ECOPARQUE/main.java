@@ -9,8 +9,10 @@ public class main {
     public static void main(String[] args) {
         
         //recursos compartidos 
-        
+                  
         NadoDelfines nd = new NadoDelfines();
+        Tiempo t = new Tiempo(9, 0);
+
         Restaurante[] colRestaurantes = new Restaurante[3];
         colRestaurantes[0] = new Restaurante(1, 2);
         colRestaurantes[1] = new Restaurante(2, 5);
@@ -31,6 +33,7 @@ public class main {
         
         
         //hilos controles 
+        ControlTiempo tiempo = new ControlTiempo(t, nd); 
         ControlPileta cp = new ControlPileta(nd);
         AsistenteSnorkel[] asistentesSnorkel = new AsistenteSnorkel[2]; 
         ControlTirolesa ct = new ControlTirolesa(ma); 
