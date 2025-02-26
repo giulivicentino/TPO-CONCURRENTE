@@ -12,16 +12,15 @@ public class Persona extends Thread {
     private CarreraGomones cg;
     private int eleccionTransporte;
     private int eleccionGomon;
+    private boolean permisoAcceso;
     private FaroMirador fa;
-    private int horarioPile;
     private int eleccionActividad;
     Random r = new Random();
 
-    public Persona(String n, Tiempo t, NadoDelfines p, int h, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa,
-                   CarreraGomones c, int eleccionTransporte, int eleccionGomon, FaroMirador faro) {
+    public Persona(String n, Tiempo t, NadoDelfines p, Restaurante res, Laguna l, MundoAventura m, int ladoTirolesa,
+            CarreraGomones c, int eleccionTransporte, int eleccionGomon, FaroMirador faro) {
         this.tiempo = t;
         this.pile = p;
-        this.horarioPile = h;
         this.setName(n);
         this.resto = res;
         this.laguna = l;
@@ -34,21 +33,22 @@ public class Persona extends Thread {
     }
 
     public void run() {
-        pile.solPile();
-        pile.abandonarFuncion();
-       /* 
-        if (tiempo.verificarIngreso()) {
-            eleccionActividad = r.nextInt(7) + 1;
-            while (tiempo.verificarHora()) {
+
+        if (tiempo.verificarIngreso()) { // Verifica si puede ingresar al parque
+            eleccionActividad = 5;
+
+            while (tiempo.verificarHora()) { // Verifica si puede realizar alguna actividad
+
                 switch (eleccionActividad) {
                     case 1:
                         // -------------NADO DELFINES
                         pile.solPile();
+                        pile.abandonarFuncion();
                         break;
+
                     case 2:
                         // -------------------SNORKEL
                         try {
-
                             laguna.solicitarEquipo();
                             Thread.sleep(2000);
                             laguna.devolverEquipo();
@@ -64,14 +64,12 @@ public class Persona extends Thread {
 
                             switch (ladoTirolesa) {
                                 case 1:
-                                    System.out.println("p este");
                                     ma.subirTirolesa();
                                     Thread.sleep(200);
                                     ma.bajarseTirolesa();
                                     break;
 
                                 case 2:
-                                    System.out.println("p oeste");
                                     ma.subirTirolesa2();
                                     Thread.sleep(200);
                                     ma.bajarseTirolesa2();
@@ -79,7 +77,7 @@ public class Persona extends Thread {
                             }
 
                             ma.usarCuerda();
-                            Thread.sleep(400);
+                            Thread.sleep(200);
                             ma.dejarCuerda();
 
                             ma.saltar();
@@ -115,40 +113,43 @@ public class Persona extends Thread {
                         try {
                             switch (eleccionTransporte) {
                                 case 1:
-                                    cg.subirTren();
+                                    permisoAcceso = cg.subirTren();
+                                    cg.bajarTren(permisoAcceso);
                                     break;
 
                                 case 2:
-                                    cg.subirBici();
-                                    Thread.sleep(6000);
-                                    cg.dejarBici();
+                                    permisoAcceso = cg.subirBici();
+                                    Thread.sleep(600);
+                                    cg.dejarBici(permisoAcceso);
                                     break;
                             }
                         } catch (Exception e) {
                         }
+                        if (permisoAcceso) {
+                            try {
+                                switch (eleccionGomon) {
+                                    case 1: // caso gomon doble
+                                        if (cg.elegirGomon(true)) {
+                                            cg.carrera();
+                                            cg.devolverGomon(true);
 
-                        try {
-                            switch (eleccionGomon) {
-                                case 1: // caso gomon doble
-                                    if (cg.elegirGomon(true)) {
+                                        } else {
+                                            Thread.sleep(4000);
+                                        }
+                                        break;
+
+                                    case 2: // caso gomon simple
+                                        cg.elegirGomon(false);
                                         cg.carrera();
-                                        cg.devolverGomon(true);
+                                        cg.devolverGomon(false);
+                                        break;
+                                }
 
-                                    } else {
-                                        Thread.sleep(4000);
-                                    }
-                                    break;
-
-                                case 2: // caso gomon simple
-                                    cg.elegirGomon(false);
-                                    cg.carrera();
-                                    cg.devolverGomon(false);
-                                    break;
+                            } catch (InterruptedException | BrokenBarrierException e) {
+                                e.printStackTrace();
                             }
-
-                        } catch (InterruptedException | BrokenBarrierException e) {
-                            e.printStackTrace();
                         }
+
                         break;
 
                     case 6:
@@ -158,7 +159,7 @@ public class Persona extends Thread {
                             fa.ingresar();
                             fa.avisaControl(); // despierto al control para que me diga a cual voy
                             boolean opcion = fa.esperarTurno();
-                            
+
                             fa.subirTobogan(opcion);
                             // Thread.sleep(1000);
                             // fa.bajarTobogan1(opcion);
@@ -169,16 +170,16 @@ public class Persona extends Thread {
                         break;
 
                     case 7:
-
+                        // -------------------ABANDONAR PARQUE
                         break;
-                        
                 }
 
-                eleccionActividad = r.nextInt(7) + 1;
-                
+                // eleccionActividad = r.nextInt(7) + 1;
+
             }
+        } else {
+            System.out.println("YA NO SE PUEDE INGRESAR");
         }
-*/
     }
-        
+
 }

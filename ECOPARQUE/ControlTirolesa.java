@@ -12,7 +12,6 @@ public class ControlTirolesa extends Thread{
                 Thread.sleep(200);
                 ma.llevarTirolesa();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

@@ -14,40 +14,50 @@ public class NadoDelfines {
     private Condition colEntrada = accesoPileta.newCondition();
     private Condition colFuncion = accesoPileta.newCondition();
     private Condition esperaControl = accesoPileta.newCondition();
+    private Tiempo t;
+
+    public NadoDelfines(Tiempo time) {
+        this.t = time;
+    }
 
     public void solPile() {
         try {
             accesoPileta.lock();
+
             while (!ingreso) {
                 colEntrada.await();
             }
-            cantPersonas++;
-            if (cantActualPile < 10) {
-                cantActualPile++;
-                System.out.println("CANTIDAD PERSONAS PILETA " + cambioPile + ": " + cantActualPile);
-            } else {
-                switch (cambioPile) {
-                    case 1:
-                        cambioPile = 2;
-                        break;
-                    case 2:
-                        cambioPile = 3;
-                        break;
-                    case 3:
-                        cambioPile = 4;
-                        break;
-                    case 4:
-                        cambioPile = 1;
-                        break;
+
+            if (t.verificarHora()) {
+                cantPersonas++;
+                if (cantActualPile < 10) {
+                    cantActualPile++;
+                    System.out.println("CANTIDAD PERSONAS PILETA " + cambioPile + ": " + cantActualPile);
+                } else {
+                    switch (cambioPile) {
+                        case 1:
+                            cambioPile = 2;
+                            break;
+                        case 2:
+                            cambioPile = 3;
+                            break;
+                        case 3:
+                            cambioPile = 4;
+                            break;
+                        case 4:
+                            cambioPile = 1;
+                            break;
+                    }
+                    cantActualPile = 0;
+                    System.out.println("CAMBIO PILETA: " + cambioPile);
                 }
-                cantActualPile = 0;
-                System.out.println("CAMBIO PILETA: " + cambioPile);
+
+                if (cambioPile == 4 && cantActualPile == 10) {
+                    ingreso = false;
+                }
+                colFuncion.await();
             }
 
-            if (cambioPile == 4 && cantActualPile == 10) {
-                ingreso = false;
-            }
-            colFuncion.await();
         } catch (Exception e) {
 
         } finally {
@@ -93,7 +103,7 @@ public class NadoDelfines {
     public void terminarFuncion() {
         try {
             accesoPileta.lock();
-            while(permiso){
+            while (permiso) {
                 esperaControl.await();
             }
             System.out.println("--- FINALIZA LA FUNCION NADO CON DELFINES ---");
@@ -107,16 +117,16 @@ public class NadoDelfines {
 
     }
 
-    public void avisaControlComienzo(){
+    public void avisaControlComienzo() {
         accesoPileta.lock();
-        permiso = true; 
+        permiso = true;
         esperaControl.signal();
         accesoPileta.unlock();
     }
 
-    public void avisaControlFin(){
+    public void avisaControlFin() {
         accesoPileta.lock();
-        permiso = false; 
+        permiso = false;
         esperaControl.signal();
         accesoPileta.unlock();
     }

@@ -9,17 +9,23 @@ public class Tiempo {
 
  public boolean verificarHora(){
     //metodo para verificar que el visitante pueda seguir realizando actividades
-    return hora >= 9 && hora < 18; 
+    return hora >= 9 && hora < 11; 
  }
 
  public boolean verificarIngreso(){
     //metodo para verificar que una persona pueda ingresar al parque
-    return hora >= 9 && hora < 17; 
+    return hora >= 9 && hora < 10; 
  }
 
 
  public void aumentarHora(){
     this.hora++; 
+    if(this.hora == 10){
+      System.out.println("--- EL PARQUE CIERRA SU INGRESO ---");
+    }
+    if(this.hora == 11){
+      System.out.println("--- EL PARQUE CERRÓ ---");
+    }
  }
 
  public void aumentarMinuto(){
