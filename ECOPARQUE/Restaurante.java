@@ -71,8 +71,6 @@ public class Restaurante {
                 System.out.println(Thread.currentThread().getName() + " ya almorzó, no puede repetir");
             }
             pedidoEnProceso = false;
-        }else{
-            System.out.println(Thread.currentThread().getName() + " se retiró del RESTAURANTE, se acabó el tiempo");
         }
         lockPedidos.unlock();
 
@@ -100,8 +98,6 @@ public class Restaurante {
                 // repetir");
             }
             pedidoEnProceso = false;
-        }else{
-            System.out.println(Thread.currentThread().getName() + " se retiró del RESTAURANTE, se acabó el tiempo");
         }
 
         lockPedidos.unlock();

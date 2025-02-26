@@ -54,7 +54,7 @@ public class Persona extends Thread {
         while (tiempo.verificarHora()) { // Verifica si puede realizar alguna actividad
 
             try {
-            parque.realizarActividad(1, this,eleccionResto,ladoTirolesa,eleccionTransporte,eleccionGomon);
+            parque.realizarActividad(5, this,eleccionResto,ladoTirolesa,eleccionTransporte,eleccionGomon);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
