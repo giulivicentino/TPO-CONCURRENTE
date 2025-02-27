@@ -4,6 +4,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class NadoDelfines {
+    public static final String AZUL = "\u001B[34m";  //colores para la salida por pantalla (mas legible)
+    public static final String RESET = "\u001B[0m";  //colores para la salida por pantalla (mas legible)
 
     private int cambioPile = 1;
     private int cantPersonas = 0;
@@ -28,11 +30,12 @@ public class NadoDelfines {
                 colEntrada.await();
             }
 
-            if (t.verificarHora()) {
+            if (t.getHora() < 17 || (t.getHora() == 17 && t.getMinuto() < 15)) {  //verifica hasta el ultimo horario que es a las 17:15
                 cantPersonas++;
                 if (cantActualPile < 10) {
                     cantActualPile++;
-                    System.out.println("CANTIDAD PERSONAS PILETA " + cambioPile + ": " + cantActualPile);
+                    System.out.println(AZUL+"(+++++ NADO DELFINES +++++ \n" 
+                                      +"+++ CANTIDAD PERSONAS PILETA: " + cambioPile + ": " + cantActualPile+")"+RESET);
                 } else {
                     switch (cambioPile) {
                         case 1:
@@ -49,7 +52,8 @@ public class NadoDelfines {
                             break;
                     }
                     cantActualPile = 0;
-                    System.out.println("CAMBIO PILETA: " + cambioPile);
+                    System.out.println(AZUL+"(+++++NADO DELFINES+++++ \n"
+                                      +"+++ CAMBIO PILETA: " + cambioPile+")"+RESET);
                 }
 
                 if (cambioPile == 4 && cantActualPile == 10) {
@@ -69,9 +73,7 @@ public class NadoDelfines {
         try {
             accesoPileta.lock();
 
-            System.out.println("Visitante se va ");
             cantPersonas--;
-
             if (cantPersonas == 0) {
                 ingreso = true;
                 colEntrada.signalAll();
@@ -91,13 +93,15 @@ public class NadoDelfines {
             while (cambioPile != 4 || !permiso) {
                 esperaControl.await();
             }
+            if(t.verificarHora()){
+                System.out.println(AZUL+"(+++++ NADO DELFINES +++++ \n" 
+                                  +"--- COMIENZA LA FUNCION NADO CON DELFINES ---)"+RESET);
+                ingreso = false;
+            }
         } catch (Exception e) {
-            // TODO: handle exception
+        }finally{
+            accesoPileta.unlock();
         }
-
-        System.out.println("--- COMIENZA LA FUNCION NADO CON DELFINES ---");
-        ingreso = false;
-        accesoPileta.unlock();
     }
 
     public void terminarFuncion() {
@@ -106,10 +110,13 @@ public class NadoDelfines {
             while (permiso) {
                 esperaControl.await();
             }
-            System.out.println("--- FINALIZA LA FUNCION NADO CON DELFINES ---");
-            cambioPile = 1;
-            cantActualPile = 0;
-            colFuncion.signalAll();
+            if(t.verificarHora()){
+                System.out.println(AZUL+"(+++++ NADO DELFINES +++++ \n"+
+                                   "--- FINALIZA LA FUNCION NADO CON DELFINES ---)"+RESET);
+                cambioPile = 1;
+                cantActualPile = 0;
+                colFuncion.signalAll();
+            }
         } catch (Exception e) {
         } finally {
             accesoPileta.unlock();

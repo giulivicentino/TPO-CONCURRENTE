@@ -10,13 +10,12 @@ public class ControlTren extends Thread {
         try {
             while (true) {
                 permiso = cg.arrancarTren();
-                Thread.sleep(300);
+                Thread.sleep(1500);
                 cg.finalizarRecorridoTren(permiso);
-                Thread.sleep(300);
+                Thread.sleep(1500);
                 cg.vueltaTren(permiso);
             }
         } catch (Exception e) {
-            // TODO: handle exception
         }
     }
 }

@@ -1,12 +1,9 @@
 
 public class ControlPileta extends Thread {
     private NadoDelfines nado;
-    private int cantActualPileta;
-    private int cambioPile = 1;
-
+  
     public ControlPileta(NadoDelfines nd) {
         this.nado = nd;
-        this.cantActualPileta = 0;
     }
 
     public void run() {

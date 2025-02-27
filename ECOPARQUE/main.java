@@ -1,5 +1,3 @@
-import java.util.Random;
-import java.util.concurrent.CyclicBarrier;
 
 public class main {
     /**
@@ -18,11 +16,13 @@ public class main {
         Laguna laguna = new Laguna(t); 
         MundoAventura ma = new MundoAventura(t); 
         CarreraGomones cg = new CarreraGomones(t); 
-        FaroMirador fa = new FaroMirador();
+        FaroMirador fa = new FaroMirador(t);
         Colectivo cole = new Colectivo();
         Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa);
+        
+        
         // hilos personas
-        Persona[] p = new Persona[20];
+        Persona[] p = new Persona[400];
 
         for (int i = 0; i < p.length; i++) {
                 p[i] = new Persona("persona " + (i),cole, ecoParque,t);
