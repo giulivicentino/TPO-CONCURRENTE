@@ -1,3 +1,8 @@
+package Hilos;
+
+import Recursos.NadoDelfines;
+import Recursos.Tiempo;
+
 public class ControlTiempo extends Thread{
     private Tiempo tiempo; 
     private NadoDelfines nd; 

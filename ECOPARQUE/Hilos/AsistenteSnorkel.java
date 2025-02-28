@@ -1,3 +1,7 @@
+package Hilos;
+
+import Recursos.Laguna;
+
 public class AsistenteSnorkel  extends Thread{
     private Laguna laguna; 
     
@@ -10,7 +14,6 @@ public class AsistenteSnorkel  extends Thread{
             try {
                 laguna.otorgarEquipo();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }            
         }

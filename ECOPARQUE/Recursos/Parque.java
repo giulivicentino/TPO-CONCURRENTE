@@ -1,3 +1,5 @@
+package Recursos;
+import Hilos.Persona;
 
 public class Parque {
     // contiene todas las actividades

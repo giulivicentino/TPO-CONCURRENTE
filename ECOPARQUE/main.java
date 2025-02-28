@@ -1,3 +1,19 @@
+import Hilos.AsistenteSnorkel;
+import Hilos.ControlFaro;
+import Hilos.ControlPileta;
+import Hilos.ControlTiempo;
+import Hilos.ControlTirolesa;
+import Hilos.ControlTren;
+import Hilos.Persona;
+import Recursos.CarreraGomones;
+import Recursos.Colectivo;
+import Recursos.FaroMirador;
+import Recursos.Laguna;
+import Recursos.MundoAventura;
+import Recursos.NadoDelfines;
+import Recursos.Parque;
+import Recursos.Restaurante;
+import Recursos.Tiempo;
 
 public class main {
     /**

@@ -1,3 +1,7 @@
+package Hilos;
+
+import Recursos.CarreraGomones;
+
 public class ControlTren extends Thread {
     private CarreraGomones cg;
     private boolean permiso;

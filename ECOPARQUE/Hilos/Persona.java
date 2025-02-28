@@ -1,4 +1,9 @@
+package Hilos;
+
 import java.util.Random;
+import Recursos.Colectivo;
+import Recursos.Parque;
+import Recursos.Tiempo;
 
 
 public class Persona extends Thread {

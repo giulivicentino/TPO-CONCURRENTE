@@ -1,7 +1,9 @@
+package Recursos; 
 import java.util.HashMap;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import Hilos.Persona;
 
 public class Restaurante {
     public static final String RESET = "\u001B[0m";  //colores para la salida por pantalla (mas legible)

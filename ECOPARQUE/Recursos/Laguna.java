@@ -1,3 +1,4 @@
+package Recursos;
 import java.util.concurrent.Semaphore;
 
 public class Laguna { // recurso compartido

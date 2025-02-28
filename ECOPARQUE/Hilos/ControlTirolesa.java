@@ -1,3 +1,7 @@
+package Hilos;
+
+import Recursos.MundoAventura;
+
 public class ControlTirolesa extends Thread{
     private MundoAventura ma; 
     

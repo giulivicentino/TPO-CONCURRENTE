@@ -1,3 +1,4 @@
+package Recursos;
 public class Tiempo {
    public static final String MAGENTA = "\u001B[35m"; // colores para la salida por pantalla (mas legible)
    public static final String RESET = "\u001B[0m"; // colores para la salida por pantalla (mas legible)

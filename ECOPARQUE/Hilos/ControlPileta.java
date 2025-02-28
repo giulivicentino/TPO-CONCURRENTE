@@ -1,3 +1,5 @@
+package Hilos;
+import Recursos.NadoDelfines;
 
 public class ControlPileta extends Thread {
     private NadoDelfines nado;

@@ -1,3 +1,4 @@
+package Recursos;
 import java.util.concurrent.Semaphore;
 
 public class FaroMirador {
@@ -22,9 +23,7 @@ public class FaroMirador {
     private Semaphore tobogan1 = new Semaphore(1);
     private Semaphore tobogan2 = new Semaphore(1);
 
-/*  private Lock toboganes = new ReentrantLock();
-    private Condition fila= toboganes.newCondition();
-*/
+
     public FaroMirador(Tiempo time){
         this.t = time; 
     }

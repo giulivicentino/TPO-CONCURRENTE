@@ -1,3 +1,7 @@
+package Hilos;
+
+import Recursos.FaroMirador;
+
 public class ControlFaro extends Thread{
     private FaroMirador fa; 
     
@@ -12,7 +16,6 @@ public class ControlFaro extends Thread{
                 fa.avisarVisitante();
                 Thread.sleep(200);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
