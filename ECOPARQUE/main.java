@@ -1,4 +1,5 @@
 import Hilos.AsistenteSnorkel;
+import Hilos.Cajero;
 import Hilos.ControlFaro;
 import Hilos.ControlPileta;
 import Hilos.ControlTiempo;
@@ -13,6 +14,7 @@ import Recursos.MundoAventura;
 import Recursos.NadoDelfines;
 import Recursos.Parque;
 import Recursos.Restaurante;
+import Recursos.Shop;
 import Recursos.Tiempo;
 
 public class main {
@@ -31,13 +33,14 @@ public class main {
         CarreraGomones cg = new CarreraGomones(t);
         FaroMirador fa = new FaroMirador(t);
         Colectivo cole = new Colectivo();
+        Shop shop = new Shop();
         Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa);
 
-        //hilos personas
-        Persona[] p = new Persona[400];
+        // hilos personas
+        Persona[] p = new Persona[40];
 
         for (int i = 0; i < p.length; i++) {
-            p[i] = new Persona("persona " + (i), cole, ecoParque, t);
+            p[i] = new Persona("Persona " + (i), cole, ecoParque, t, shop);
         }
 
         // hilos controles
@@ -47,23 +50,27 @@ public class main {
         ControlTirolesa ct = new ControlTirolesa(ma);
         ControlTren ctren = new ControlTren(cg);
         ControlFaro cFaro = new ControlFaro(fa);
+        Cajero cajero1 = new Cajero(1, shop);
+        Cajero cajero2 = new Cajero(2, shop);
 
         for (int i = 0; i < asistentesSnorkel.length; i++) {
             asistentesSnorkel[i] = new AsistenteSnorkel(laguna);
         }
 
         // comienzo de hilos controles
-       
+
         cp.start(); // control pileta
 
         for (int i = 0; i < asistentesSnorkel.length; i++) {
-            asistentesSnorkel[i].start(); //asistentes snorkel
+            asistentesSnorkel[i].start(); // asistentes snorkel
         }
 
         ct.start(); // control tirolesa
         ctren.start(); // control tren
         cFaro.start(); // control faro
-        tiempo.start();  //control tiempo
+        tiempo.start(); // control tiempo
+        cajero1.start(); // cajero del shop
+        cajero2.start();
 
         // comienzo de hilos personas
         for (int i = 0; i < p.length; i++) {
