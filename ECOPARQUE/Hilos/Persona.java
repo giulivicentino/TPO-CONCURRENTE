@@ -24,7 +24,7 @@ public class Persona extends Thread {
     public void run() {
         Random r = new Random();
         boolean porCole = r.nextBoolean();
-/* 
+
         if (porCole) {
             System.out.println(Thread.currentThread().getName().toString()
                     + " se dirige a la fila del colectivo");
@@ -58,7 +58,7 @@ public class Persona extends Thread {
                 e.printStackTrace();
             }
         }
-*/
+
         // se cambia el eleccion aleatorio hasta que un numero salga (6) que determine
         // que ya se quiere ir
 
