@@ -22,7 +22,7 @@ public class main {
     public static void main(String[] args) {
 
         // recursos compartidos
-        Tiempo t = new Tiempo(9, 0);
+        Tiempo t = new Tiempo(16, 0);
         NadoDelfines nd = new NadoDelfines(t);
         Restaurante[] colRestaurantes = new Restaurante[3];
         colRestaurantes[0] = new Restaurante(1, 2, t);
@@ -37,7 +37,7 @@ public class main {
         Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa);
 
         // hilos personas
-        Persona[] p = new Persona[40];
+        Persona[] p = new Persona[100];
 
         for (int i = 0; i < p.length; i++) {
             p[i] = new Persona("Persona " + (i), cole, ecoParque, t, shop);
@@ -76,6 +76,10 @@ public class main {
         for (int i = 0; i < p.length; i++) {
             p[i].start();
         }
+
+
+
+
     }
 
 }

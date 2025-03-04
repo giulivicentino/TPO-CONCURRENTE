@@ -24,7 +24,7 @@ public class Persona extends Thread {
     public void run() {
         Random r = new Random();
         boolean porCole = r.nextBoolean();
-
+/* 
         if (porCole) {
             System.out.println(Thread.currentThread().getName().toString()
                     + " se dirige a la fila del colectivo");
@@ -55,70 +55,61 @@ public class Persona extends Thread {
             try {
                 tienda.comprar();
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-
+*/
         // se cambia el eleccion aleatorio hasta que un numero salga (6) que determine
         // que ya se quiere ir
-        /*
-         * if (tiempo.verificarIngreso()) { // Verifica si puede ingresar al parque
-         * Random r6 = new Random();// 4
-         * int eleccionActividad = r6.nextInt(6);
-         * int eleccionResto = 0, ladoTirolesa = 0, eleccionGomon = 0,
-         * eleccionTransporte = 0; // si se nesesita
-         * // alguno, se establece
-         * // aleatorio solo ese
-         * // atributo
-         * switch (eleccionActividad) { // para que solo genere el atributo aleatorio
-         * que le corresponda
-         * case 2:
-         * Random r1 = new Random();// 2
-         * eleccionResto = r1.nextInt(3) + 1;
-         * break;
-         * case 3:
-         * Random r3 = new Random();// 3
-         * ladoTirolesa = r3.nextInt(2) + 1;
-         * break;
-         * case 4:
-         * Random r4 = new Random();// 4
-         * eleccionTransporte = r4.nextInt(2) + 1;
-         * 
-         * Random r5 = new Random();// 4
-         * eleccionGomon = r5.nextInt(2) + 1;
-         * break;
-         * }
-         * 
-         * while (tiempo.verificarHora()) { // Verifica si puede realizar alguna
-         * actividad
-         * 
-         * try {
-         * parque.realizarActividad(eleccionActividad, this, eleccionResto,
-         * ladoTirolesa, eleccionTransporte,
-         * eleccionGomon);
-         * } catch (InterruptedException e) {
-         * e.printStackTrace();
-         * }
-         * eleccionActividad = r6.nextInt(6);
-         * }
-         * 
-         * }
-         */
 
-        Random r8 = new Random();
-        boolean pasaPorShopV = r8.nextBoolean();
-        System.out.println(Thread.currentThread().getName().toString() + "SUPOOONETEEEEE????????   " + pasaPorShopV);
+        if (tiempo.verificarIngreso()) { // Verifica si puede ingresar al parque
+            Random r1 = new Random();
+            Random r3 = new Random();
+            Random r4 = new Random();
+            Random r5 = new Random();
+            Random r6 = new Random();
 
-        if (pasaPorShopV) {
-            try {
-                tienda.comprar();
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+          //  int eleccionActividad = r6.nextInt(6);
+          int eleccionActividad = 2; 
+            int eleccionResto = 0, ladoTirolesa = 0, eleccionGomon = 0,
+                    eleccionTransporte = 0;
+
+            while (tiempo.verificarHora()) { // Verifica si puede realizar alguna actividad
+
+                switch (eleccionActividad) { // estructura switch para que solo genere el atributo aleatorio que le
+                                             // corresponda
+                    case 2:
+                        // numero random para la eleccion del restaurante
+                        eleccionResto = r1.nextInt(3) + 1;
+                        break;
+
+                    case 3:
+                        // numero random para elegir el lado de la tirolesa
+                        ladoTirolesa = r3.nextInt(2) + 1;
+                        break;
+
+                    case 4:
+                        // numero random para la eleccion del transporte
+                        eleccionTransporte = r4.nextInt(2) + 1;
+
+                        // numero random para la eleccion del tipo de gomon
+                        eleccionGomon = r5.nextInt(2) + 1;
+                        break;
+                }
+
+                try {
+                    parque.realizarActividad(eleccionActividad, this, eleccionResto, ladoTirolesa, eleccionTransporte,
+                            eleccionGomon);
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+           //     eleccionActividad = r6.nextInt(6);
             }
 
         }
+
         System.out.println(Thread.currentThread().getName().toString() + "se va del parque");
     }
 }

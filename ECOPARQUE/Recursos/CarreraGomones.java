@@ -41,7 +41,7 @@ public class CarreraGomones {
 
     // metodos usados por visitantes para elegir medio de transporte
 
-    public synchronized boolean subirTren() {
+    public synchronized void subirTren() {
         try {
             while (cantidadSubidoTren == cantidadTren) {
                 this.wait();
@@ -51,13 +51,12 @@ public class CarreraGomones {
                 System.out.println(AMARILLO+"```` CARRERA GOMONES ```` \n"+"EL visitante " + Thread.currentThread().getName()
                         + " se subió al tren, cantidad de personas subidas al tren; " + cantidadSubidoTren+RESET);
                 this.notifyAll();
+                bajarTren(accesoTren);
             }else{
                 accesoTren = false; 
             }
         } catch (Exception e) {
         }
-
-        return accesoTren; 
     }
 
     public synchronized void bajarTren(boolean acceso) {

@@ -32,13 +32,7 @@ public class Parque {
                 break;
 
             case 1: // -------------------SNORKEL
-                try {
-                    laguna.solicitarEquipo();
-                    Thread.sleep(500);
-                    laguna.devolverEquipo();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                laguna.solicitarEquipo();
                 break;
 
             case 2:

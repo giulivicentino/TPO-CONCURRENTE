@@ -13,26 +13,28 @@ public class Laguna { // recurso compartido
     }
 
     public void solicitarEquipo() {
-        if(t.getHora() < 17 || (t.getHora() == 17 && t.getMinuto() < 45)){
+        if(t.permisoRealizarActividad()){ //15 minutos antes del cierre es el tiempo limite para utilizar la laguna
             verificarEquipo.release();
+            try {
+                Thread.sleep(500);
+                devolverEquipo();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     public void otorgarEquipo() throws InterruptedException {
             verificarEquipo.acquire();
-        if (t.getHora() < 17 || (t.getHora() == 17 && t.getMinuto() < 50)) {
             equipo.acquire();
             System.out.println("/// LAGUNA /// \n"+"equipo otorgado");
             equipoOtorgado.release();
-        }
     }
 
     public void devolverEquipo() throws InterruptedException {
-        if (t.verificarHora()) {
             equipoOtorgado.acquire();
             System.out.println("/// LAGUNA /// \n"+"La persona " + Thread.currentThread().getName() + " terminó de usar la laguna");
             equipo.release();
-        }
     }
 
 }

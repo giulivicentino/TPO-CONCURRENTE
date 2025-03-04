@@ -1,5 +1,7 @@
 package Recursos;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -60,7 +62,18 @@ public class NadoDelfines {
                 if (cambioPile == 4 && cantActualPile == 10) {
                     ingreso = false;
                 }
-                colFuncion.await();
+
+                
+                colFuncion.await(60, TimeUnit.SECONDS); //tiempo de espera si la función no se llena
+                
+                if(cantActualPile != 0){ //Caso visitante se cansa de esperar la función
+                    System.out.println(AZUL+"+++++NADO DELFINES+++++ \n"
+                    +"+++ Visitante se cansó de esperar"+RESET);
+                    cantActualPile--; 
+                }
+                
+
+
             }
 
         } catch (Exception e) {
@@ -111,13 +124,12 @@ public class NadoDelfines {
             while (permiso) {
                 esperaControl.await();
             }
-            if(t.verificarHora()){
                 System.out.println(AZUL+"(+++++ NADO DELFINES +++++ \n"+
                                    "--- FINALIZA LA FUNCION NADO CON DELFINES ---)"+RESET);
                 cambioPile = 1;
                 cantActualPile = 0;
                 colFuncion.signalAll();
-            }
+
         } catch (Exception e) {
         } finally {
             accesoPileta.unlock();

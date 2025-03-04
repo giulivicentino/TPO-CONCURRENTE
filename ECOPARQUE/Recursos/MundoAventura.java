@@ -41,47 +41,47 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
     // TIROLESA
 
     public void subirTirolesa() {
-        try {
-            accesoTirolesa.lock();
-            cantEsperandoLado1++;
-            while (cantTirolesas == 0) {
-                colaTirolesa1.await();
+            try {
+                accesoTirolesa.lock();
+                cantEsperandoLado1++;
+                while (cantTirolesas == 0) {
+                    colaTirolesa1.await();
+                }
+                if (t.permisoRealizarActividad()) {
+                    cantTirolesas--;
+                    cantEsperandoLado1--;
+                    System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"
+                                            +"La persona " + Thread.currentThread().getName()
+                            + " se encuentra utilizando la tirolesa de ESTE a OESTE, tirolesas disponibles: "+ cantTirolesas+RESET);
+                }
+            } catch (InterruptedException e) {
+    
+            } finally {
+                accesoTirolesa.unlock();
             }
-            if (t.permisoRealizarActividad()) {
-                cantTirolesas--;
-                cantEsperandoLado1--;
-                System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"
-                                        +"La persona " + Thread.currentThread().getName()
-                        + " se encuentra utilizando la tirolesa de ESTE a OESTE, tirolesas disponibles: "+ cantTirolesas+RESET);
-            }
-
-        } catch (InterruptedException e) {
-
-        } finally {
-            accesoTirolesa.unlock();
-        }
+        
     }
 
     public void subirTirolesa2() {
-        try {
-            accesoTirolesa.lock();
-            cantEsperandoLado2++;
-            while (cantTirolesas == 0) {
-                colaTirolesa1.await();
+            try {
+                accesoTirolesa.lock();
+                cantEsperandoLado2++;
+                while (cantTirolesas == 0) {
+                    colaTirolesa1.await();
+                }
+                if (t.permisoRealizarActividad()) {
+                    cantTirolesas--;
+                    cantEsperandoLado2--;
+                    System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"
+                                            +"La persona " + Thread.currentThread().getName()+ " se encuentra utilizando la tirolesa de OESTE a ESTE, tirolesas disponibles: "
+                                            + cantTirolesas+RESET);
+                }
+            } catch (InterruptedException e) {
+    
+            } finally {
+                accesoTirolesa.unlock();
             }
-            if (t.permisoRealizarActividad()) {
-                cantTirolesas--;
-                cantEsperandoLado2--;
-                System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"
-                                        +"La persona " + Thread.currentThread().getName()+ " se encuentra utilizando la tirolesa de OESTE a ESTE, tirolesas disponibles: "
-                                        + cantTirolesas+RESET);
-            }
-
-        } catch (InterruptedException e) {
-
-        } finally {
-            accesoTirolesa.unlock();
-        }
+        
     }
 
     public void bajarseTirolesa() {
@@ -99,6 +99,10 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
                                         +"LADO OESTE VACIO"+RESET);
                 semControl.release();
             }
+        }else{ 
+            //señal para los hilos visitantes que todavia siguen en cola de espera
+            colaTirolesa1.signalAll();
+            colaTirolesa2.signalAll();
         }
         accesoTirolesa.unlock();
     }
@@ -117,6 +121,10 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
                 System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"+"LADO ESTE VACIO"+RESET);
                 semControl.release();
             }
+        }else{
+            //señal para los hilos visitantes que todavia siguen en cola de espera
+            colaTirolesa1.signalAll();
+            colaTirolesa2.signalAll();
         }
         accesoTirolesa.unlock();
     }
@@ -147,7 +155,7 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
     public void usarCuerda(){
         accesoCuerda.lock();
             try {
-                while(cuerda < 1){
+                while(cuerda < 1 && t.permisoRealizarActividad()){
                 colaCuerda.await();
                 }
                 if(t.permisoRealizarActividad()){
@@ -156,6 +164,9 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
                     Thread.sleep(900);
                     System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"+"La persona "+Thread.currentThread().getName()+" dejó de usar la cuerda"+RESET);
                     cuerda++;
+                    colaCuerda.signalAll();
+                }else{
+                    //señal para los hilos visitantes que todavia siguen en cola de espera
                     colaCuerda.signalAll();
                 }
             } catch (InterruptedException e) {
@@ -172,12 +183,15 @@ public class MundoAventura { // recurso compartido por tirolesas, cuerdas y salt
             while(cantSaltos == 0){
                 colaSalto.await();
             }
-            if(t.permisoRealizarActividad()){
+            if(t.permisoRealizarActividad() && t.permisoRealizarActividad()){
                 cantSaltos--; 
                 System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"+"La persona "+Thread.currentThread().getName()+" está por saltar"+RESET);
                 Thread.sleep(900);
                 System.out.println(VERDE+"~~~~ MUNDO AVENTURA ~~~~ \n"+"La persona "+Thread.currentThread().getName()+" acaba de saltar"+RESET);
                 cantSaltos++; 
+                colaSalto.signalAll();
+            }else{
+                //señal para los hilos visitantes que todavia siguen en cola de espera
                 colaSalto.signalAll();
             }
         } catch (Exception e) {
