@@ -1,4 +1,6 @@
 package Recursos;
+import java.util.Random;
+
 import Hilos.Persona;
 
 public class Parque {
@@ -10,6 +12,8 @@ public class Parque {
     private MundoAventura ma;
     private CarreraGomones cg;
     private FaroMirador fa;
+    private Random r = new Random();
+    private int comidaResto; 
     // el reloj
 
     public Parque(NadoDelfines p, Restaurante[] colRestaurantes, Laguna l, MundoAventura m,
@@ -40,12 +44,12 @@ public class Parque {
                 // -------------------RESTAURANTE
                 try {
 
-                    restaurante = resto[eleccionResto -1];
+                    restaurante = resto[eleccionResto - 1];
+                    comidaResto = r.nextInt(2)+1; 
 
                     //hay que hacer un switch
-                    restaurante.entrarRestaurante(visitante);
-                    restaurante.pedirAlmuerzo(visitante);
-                    restaurante.salirRestaurante();
+                    restaurante.entrarRestaurante(visitante, comidaResto);
+                   // restaurante.pedirAlmuerzo(visitante);                    Thread.sleep(400);
 
 
                //     restaurante.entrarRestaurante(visitante);
