@@ -68,12 +68,12 @@ public class Persona extends Thread {
             Random r4 = new Random();
             Random r5 = new Random();
             Random r6 = new Random();
-            
+            Random r7 = new Random();
            
-          //int eleccionActividad = 2; 
+           
            int eleccionActividad = r6.nextInt(7);
             int eleccionResto = 0, ladoTirolesa = 0, eleccionGomon = 0,
-                    eleccionTransporte = 0;
+                    eleccionTransporte = 0, eleccionComida =0;
 
             while (tiempo.verificarHora()) { // Verifica si puede realizar alguna actividad
                
@@ -82,6 +82,7 @@ public class Persona extends Thread {
                     case 2:
                         // numero random para la eleccion del restaurante
                         eleccionResto = r1.nextInt(3) + 1;
+                        eleccionComida = r7.nextInt(2)+1;
                         break;
 
                     case 3:
@@ -100,7 +101,7 @@ public class Persona extends Thread {
                 }
                 try {
                     parque.realizarActividad(eleccionActividad, this, eleccionResto, ladoTirolesa, eleccionTransporte,
-                            eleccionGomon);
+                            eleccionGomon,eleccionComida);
 
                 } catch (InterruptedException e) {
                     e.printStackTrace();

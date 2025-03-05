@@ -29,7 +29,7 @@ public class Parque {
     }
 
     public void realizarActividad(int eleccion, Persona visitante, int eleccionResto, int ladoTirolesa,
-            int eleccionTransporte, int eleccionGomon) throws InterruptedException {
+            int eleccionTransporte, int eleccionGomon, int eleccionComida) throws InterruptedException {
 
         switch (eleccion) {
 
@@ -43,26 +43,43 @@ public class Parque {
                 break;
 
             case 2:
-               
-            // -------------------RESTAURANTE
+                // -------------------RESTAURANTE
                 try {
+                    switch (eleccionResto) {
+                        case 1:
+                            resto[0].entraRestaurante(visitante, eleccionComida);
+                            Thread.sleep(500);
+                            switch (eleccionComida) {
+                                case 1:
+                                    resto[0].pedirAlmuerzo(visitante);
+                                    break;
 
-                    restaurante = resto[eleccionResto - 1];
-                    comidaResto = r.nextInt(2)+1; 
+                                case 2:
+                                    resto[0].pedirMerienda(visitante);
+                                    break;
+                            }
+                            resto[0].salirRestaurante();
+                            break;
 
-                    //hay que hacer un switch
-                    restaurante.entrarRestaurante(visitante, comidaResto);
-                   // restaurante.pedirAlmuerzo(visitante);                    Thread.sleep(400);
+                        case 2:
+                            resto[1].entraRestaurante(visitante, eleccionComida);
+                            Thread.sleep(500);
+                            switch (eleccionComida) {
+                                case 1:
+                                    resto[1].pedirAlmuerzo(visitante);
+                                    break;
 
-
-               //     restaurante.entrarRestaurante(visitante);
-               //     restaurante.pedirMerienda(visitante);
-               //     restaurante.salirRestaurante();
-
+                                case 2:
+                                    resto[1].pedirMerienda(visitante);
+                                    break;
+                            }
+                            resto[1].salirRestaurante();
+                            break;
+                    }
                 } catch (Exception e) {
                 }
+                ;
                 break;
-
             case 3:
                 // -------------------MUNDO AVENTURA
 
