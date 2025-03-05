@@ -1,5 +1,6 @@
 import Hilos.AsistenteSnorkel;
 import Hilos.Cajero;
+import Hilos.Colectivero;
 import Hilos.ControlFaro;
 import Hilos.ControlPileta;
 import Hilos.ControlTiempo;
@@ -23,6 +24,12 @@ public class main {
 
         // recursos compartidos
         Tiempo t = new Tiempo(16, 0);
+        
+        Colectivo[] colColectvos = new Colectivo[2];
+        colColectvos[0] = new Colectivo(t,1);
+        colColectvos[1] = new Colectivo(t,2);
+        
+
         NadoDelfines nd = new NadoDelfines(t);
         Restaurante[] colRestaurantes = new Restaurante[3];
         colRestaurantes[0] = new Restaurante(1, 2, t);
@@ -32,7 +39,7 @@ public class main {
         MundoAventura ma = new MundoAventura(t);
         CarreraGomones cg = new CarreraGomones(t);
         FaroMirador fa = new FaroMirador(t);
-        Colectivo cole = new Colectivo();
+        
         Shop shop = new Shop();
         Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa);
 
@@ -40,7 +47,7 @@ public class main {
         Persona[] p = new Persona[100];
 
         for (int i = 0; i < p.length; i++) {
-            p[i] = new Persona("Persona " + (i), cole, ecoParque, t, shop);
+            p[i] = new Persona("Persona " + (i), colColectvos, ecoParque, t, shop);
         }
 
         // hilos controles
@@ -52,6 +59,9 @@ public class main {
         ControlFaro cFaro = new ControlFaro(fa);
         Cajero cajero1 = new Cajero(1, shop);
         Cajero cajero2 = new Cajero(2, shop);
+        Colectivero chofer1 = new Colectivero(colColectvos[0],t);
+        Colectivero chofer2 = new Colectivero(colColectvos[1],t);
+        
 
         for (int i = 0; i < asistentesSnorkel.length; i++) {
             asistentesSnorkel[i] = new AsistenteSnorkel(laguna);
@@ -71,7 +81,9 @@ public class main {
         tiempo.start(); // control tiempo
         cajero1.start(); // cajero del shop
         cajero2.start();
-
+        chofer1.start();
+        chofer2.start();
+       
         // comienzo de hilos personas
         for (int i = 0; i < p.length; i++) {
             p[i].start();

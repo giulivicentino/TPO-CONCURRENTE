@@ -1,36 +1,83 @@
 package Recursos;
 import java.util.concurrent.Semaphore;
-
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 public class Colectivo {
-        private Semaphore semCole1 = new Semaphore(2);
-        private Semaphore semCole2 = new Semaphore(2);
-        private Semaphore mutexSubir = new Semaphore(1,true);
-        private Semaphore mutexBajar = new Semaphore(1,true);
+    private int capacidadCole = 25;
+    private boolean puedeSubir = true;
+    private int cantidadEnCole;
+    private Tiempo t;
+    private int id;
 
-public boolean subirCole() throws InterruptedException{
-        mutexSubir.acquire();//para que no pisen la info
-        boolean cole1;
-        
-        if(semCole1.availablePermits() > semCole2.availablePermits()){//si esta mas vacio el cole 1 que el cole 2
-            semCole1.acquire();
-            cole1=true;
-        }else { //
-            semCole2.acquire();
-            cole1=false;
-        }
-        mutexSubir.release();
-                return cole1;
+   private Semaphore lugares = new Semaphore(25);
+
+    public static final String VERDE = "\u001B[38;5;46m"; // Verde en la paleta de 256 colores
+    public static final String ROJO = "\u001B[38;5;196m"; // Rojo en la paleta de 256 colores
+    public static final String RESET = "\u001B[0m";  //colores para la salida por pantalla (mas legible)
+/* 
+
+    private Lock colectivo = new ReentrantLock();
+    private Condition esperaLugar = colectivo.newCondition();
+    private Condition esperaCole = colectivo.newCondition();
+*/
+    public Colectivo(Tiempo tiempo,int id){
+        this.t= tiempo;
+        this.id=id;
     }
 
-    public void bajarCole(boolean cole1) throws InterruptedException{
-        mutexBajar.acquire();//para que no pisen la info
-        if(cole1){//si fue por el 1
-            semCole1.release();
-        }else { //si fue por el 2
-            semCole2.release();
+    
+    
+    // metodos del visitante
+    public synchronized boolean subirCole() throws InterruptedException {
+        boolean subio=false;
+        if (t.verificarIngreso()) {
+            try {
+                if(cantidadEnCole+1 == capacidadCole){
+                    puedeSubir=false;
+                }
+                while (!puedeSubir) { // no sube si esta lleno o si esta en viaje
+                    this.wait();
+                }
+                
+                cantidadEnCole++;
+                subio = true;
+                System.out.println(VERDE+"```` INGRESO POR COLECTIVO "+id +" ```` \n"+"La persona " + Thread.currentThread().getName() + "se SUBE al colectivo , cantidad en cole: "+cantidadEnCole+RESET);
+            } catch (InterruptedException ex) {
+            } 
+        } else {
+            subio = false; // no sube por que ya es tarde
         }
-       mutexBajar.release();
+        return subio;
     }
 
+    public synchronized void bajarCole(boolean subio) throws InterruptedException {
+        if (subio) {
+            cantidadEnCole--;
+            if (cantidadEnCole==0) {
+                puedeSubir=true;
+                System.out.println("SOY EL ULTIMO que baajaa, AVISO QUE AHORA HAY COLE NUEVOOO");
+                
+            }
+            System.out.println(ROJO+"```` INGRESO POR COLECTIVO "+id +" ```` \n" + "La persona " + Thread.currentThread().getName()+ "se BAJA del colectivo,  cantidad en cole: " + cantidadEnCole+RESET);
+            this.notifyAll(); // "actualiza" a los que esperaban
+        }
+    }
+    //metodos del colectivero
+    public synchronized void arrancarCole() throws InterruptedException {
+        puedeSubir=false;
+        System.out.println(" ..... COLECTIVO "+id +"  EN VIAJE .....");
+    }
+
+/* 
+    public synchronized void vueltaCole() throws InterruptedException {
+        while (cantidadEnCole != 0) { // espera a que se bajen todos para "reiniciar"
+            this.wait();
+        }
+        enViaje=false;
+        System.out.println(" ..... COLECTIVO "+id +" VUELVE EXITOSAMENTE .....");
+        this.notifyAll();
+    }
+*/
 
 }

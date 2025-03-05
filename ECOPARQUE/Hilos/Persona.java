@@ -9,45 +9,53 @@ import Recursos.Tiempo;
 public class Persona extends Thread {
 
     private Parque parque; // contiene todas las actividades
-    private Colectivo cole;
+    private Colectivo[] colectivos;
     private Tiempo tiempo;
     private Shop tienda;
 
-    public Persona(String n, Colectivo cole, Parque unParque, Tiempo t, Shop tiendita) {
+    public Persona(String n, Colectivo[] colColectivos, Parque unParque, Tiempo t, Shop tiendita) {
         this.setName(n);
-        this.cole = cole;
+        this.colectivos = colColectivos;
         this.parque = unParque;
         this.tiempo = t;
         this.tienda = tiendita;
     }
 
     public void run() {
-        Random r = new Random();
-        boolean porCole = r.nextBoolean();
-
+       // Random r = new Random();
+       // boolean porCole = r.nextBoolean();
+       boolean porCole=true;
+ //--------------------------------------------------------------------------------------- no hace falta poner que solo haga actividades si ingreso??
         if (porCole) {
             System.out.println(Thread.currentThread().getName().toString()
                     + " se dirige a la fila del colectivo");
             try {
-                System.out.println(Thread.currentThread().getName().toString()
-                        + " SUBIO al colectivo");
-                boolean cole1 = cole.subirCole();
-                Thread.sleep(3000);
-                cole.bajarCole(cole1);
+                Random r2 = new Random();
+                int numCole = r2.nextInt(2) + 1;
+                Colectivo unCole = colectivos[numCole-1];
+                
                 if (tiempo.verificarIngreso()) {
-                    System.out.println(Thread.currentThread().getName().toString()
-                            + " llega a destino con el tour");
+                   
+                    boolean subio = unCole.subirCole();
+                    if (subio) {
+                        Thread.sleep(3000); // dura 10 minutos el viaje
+                        unCole.bajarCole(subio);
+                        System.out.println(Thread.currentThread().getName().toString()
+                                + " llega a destino con el tour");
+                    }
+
                 }
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
+           
             if (tiempo.verificarIngreso()) {
-                System.out.println(Thread.currentThread().getName().toString() + " accede de manera particular");
+                System.out.println(Thread.currentThread().getName().toString() + " accede de manera particular"); 
             }
         }
-
+/* 
         Random r7 = new Random();
         boolean pasaPorShop = r7.nextBoolean();
 
@@ -108,7 +116,7 @@ public class Persona extends Thread {
             }
 
         }
-
+*/
         System.out.println(Thread.currentThread().getName().toString() + "se va del parque");
     }
 }
