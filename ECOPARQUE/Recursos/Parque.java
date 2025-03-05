@@ -5,6 +5,7 @@ public class Parque {
     // contiene todas las actividades
     private NadoDelfines pile;
     private Restaurante[] resto;
+    private Restaurante restaurante; 
     private Laguna laguna;
     private MundoAventura ma;
     private CarreraGomones cg;
@@ -39,17 +40,17 @@ public class Parque {
                 // -------------------RESTAURANTE
                 try {
 
-                    Restaurante restaurante = resto[eleccionResto];
+                    restaurante = resto[eleccionResto -1];
 
+                    //hay que hacer un switch
                     restaurante.entrarRestaurante(visitante);
                     restaurante.pedirAlmuerzo(visitante);
                     restaurante.salirRestaurante();
 
-                    Thread.sleep(2000);
 
-                    restaurante.entrarRestaurante(visitante);
-                    restaurante.pedirMerienda(visitante);
-                    restaurante.salirRestaurante();
+               //     restaurante.entrarRestaurante(visitante);
+               //     restaurante.pedirMerienda(visitante);
+               //     restaurante.salirRestaurante();
 
                 } catch (Exception e) {
                 }

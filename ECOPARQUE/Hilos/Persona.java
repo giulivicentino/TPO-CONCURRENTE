@@ -96,7 +96,6 @@ public class Persona extends Thread {
                         eleccionGomon = r5.nextInt(2) + 1;
                         break;
                 }
-
                 try {
                     parque.realizarActividad(eleccionActividad, this, eleccionResto, ladoTirolesa, eleccionTransporte,
                             eleccionGomon);

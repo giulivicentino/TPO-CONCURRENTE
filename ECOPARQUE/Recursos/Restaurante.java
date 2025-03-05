@@ -22,96 +22,80 @@ public class Restaurante {
         t = time;
     }
 
-    private Lock lockResto = new ReentrantLock(); 
-    private Condition fila = lockResto.newCondition();
 
-    private Lock lockPedidos = new ReentrantLock();
-    private Condition filaPedidos = lockPedidos.newCondition();
 
-    public void entrarRestaurante(Persona personita) {
-        lockResto.lock();
+    public synchronized void entrarRestaurante(Persona personita) {
         if (t.permisoRealizarActividad()) {
             if (!personas.containsKey(personita)) {
                 personas.put(personita, new boolean[] { false, false }); // agrega persona a la fila de ese restaurante
             }
             try {
                 while (cantActualResto + 1 > capacidad) { // si al entrar la persona el restaurante  está lleno, espera
-                    fila.await();
+                    this.wait();
                 }
-                cantActualResto++;
-                System.out.println(ROJO+".... RESTAURANTE .... \n"+ Thread.currentThread().getName() + " INGRESÓ a RESTAURANTE -" + id
+                if (t.permisoRealizarActividad()) {
+                    cantActualResto++;
+               System.out.println(ROJO+".... RESTAURANTE .... \n"+ Thread.currentThread().getName() + " INGRESÓ a RESTAURANTE -" + id
                         + "- , cantActual: " + cantActualResto + " max: " + capacidad+ RESET);
+                
+                this.notifyAll();
+
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
         }
 
-        lockResto.unlock();
     }
 
-    public void pedirAlmuerzo(Persona personita) {
+    public synchronized void pedirAlmuerzo(Persona personita) {
 
-        lockPedidos.lock();
-        if (t.permisoRealizarActividad()) {
+        if (t.verificarHora()) {
             if (!personas.get(personita)[0]) { // verifica si la persona ya almorzó
                 try {
-                    while (pedidoEnProceso) {
-                        filaPedidos.await();
-                    }
-
                     System.out.println(ROJO+".... RESTAURANTE .... \n"+
                             Thread.currentThread().getName() + " se encuentra almorzando en: " + id+RESET);
                     Thread.sleep(200);
-                    pedidoEnProceso = true;
                     personas.get(personita)[0] = true;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
-            } else {
-                System.out.println(ROJO+".... RESTAURANTE .... \n"+Thread.currentThread().getName() + " ya almorzó, no puede repetir"+RESET);
             }
-            pedidoEnProceso = false;
         }
-        lockPedidos.unlock();
 
     }
 
-    public void pedirMerienda(Persona personita) {
-        lockPedidos.lock();
-        if (t.permisoRealizarActividad()) {
+    public synchronized void pedirMerienda(Persona personita) {
+        if (t.verificarHora()) {
             if (!personas.get(personita)[1]) { // verifica si la persona ya merendó
                 try {
-                    while (pedidoEnProceso) {
-                        filaPedidos.await();
-                    }
 
                     System.out.println(ROJO+".... RESTAURANTE .... \n"+Thread.currentThread().getName() + " merendando ------- EN: " + id+RESET);
-                    Thread.sleep(200);
-                    pedidoEnProceso = true;
+                    Thread.sleep(1000);
                     personas.get(personita)[1] = true;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
             } 
-            pedidoEnProceso = false;
         }
 
-        lockPedidos.unlock();
 
     }
 
-    public void salirRestaurante() {
+    public synchronized void salirRestaurante() {
         // metodo que modifica la cantidad actual de restaurante
-        lockResto.lock();
-        if (t.permisoRealizarActividad()) {
-            cantActualResto--;
-            System.out.println(ROJO+".... RESTAURANTE .... \n"+Thread.currentThread().getName() + " ME FUI de RESTO -" + id + "- , cantActual: "
-                    + cantActualResto + " max: " + capacidad+RESET);
-            fila.signalAll();
+            if(t.verificarHora()){
+                cantActualResto--;
+                System.out.println(ROJO+".... RESTAURANTE .... \n"+Thread.currentThread().getName() + " ME FUI de RESTO -" + id + "- , cantActual: "
+                        + cantActualResto + " max: " + capacidad+RESET);
+                this.notifyAll();
+            }else{
+                this.notifyAll();
+
+            }
         }
-        lockResto.unlock();
-    }
 
 }
