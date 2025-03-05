@@ -14,16 +14,18 @@ public class Parque {
     private FaroMirador fa;
     private Random r = new Random();
     private int comidaResto; 
+    private Shop tienda;
     // el reloj
 
     public Parque(NadoDelfines p, Restaurante[] colRestaurantes, Laguna l, MundoAventura m,
-            CarreraGomones c, FaroMirador faro) {
+            CarreraGomones c, FaroMirador faro, Shop tiendita) {
         this.pile = p;
         this.laguna = l;
         this.resto = colRestaurantes;
         this.ma = m;
         this.cg = c;
         this.fa = faro;
+        this.tienda = tiendita;
     }
 
     public void realizarActividad(int eleccion, Persona visitante, int eleccionResto, int ladoTirolesa,
@@ -41,7 +43,8 @@ public class Parque {
                 break;
 
             case 2:
-                // -------------------RESTAURANTE
+               
+            // -------------------RESTAURANTE
                 try {
 
                     restaurante = resto[eleccionResto - 1];
@@ -140,6 +143,16 @@ public class Parque {
                 } catch (Exception e) {
                 }
                 break;
+                case 6:
+                try {
+                    tienda.comprar();
+                    Thread.sleep(1000);
+                    tienda.esperaPagar();
+                    tienda.irseTienda();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            break;
         }
 
     }

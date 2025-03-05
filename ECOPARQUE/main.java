@@ -23,7 +23,7 @@ public class main {
     public static void main(String[] args) {
 
         // recursos compartidos
-        Tiempo t = new Tiempo(16, 0);
+        Tiempo t = new Tiempo(15, 0);
         
         Colectivo[] colColectvos = new Colectivo[2];
         colColectvos[0] = new Colectivo(t,1);
@@ -41,13 +41,13 @@ public class main {
         FaroMirador fa = new FaroMirador(t);
         
         Shop shop = new Shop();
-        Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa);
+        Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa,shop);
 
         // hilos personas
         Persona[] p = new Persona[100];
 
         for (int i = 0; i < p.length; i++) {
-            p[i] = new Persona("Persona " + (i), colColectvos, ecoParque, t, shop);
+            p[i] = new Persona("Persona " + (i), colColectvos, ecoParque, t);
         }
 
         // hilos controles

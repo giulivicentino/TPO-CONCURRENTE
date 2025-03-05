@@ -11,21 +11,21 @@ public class Persona extends Thread {
     private Parque parque; // contiene todas las actividades
     private Colectivo[] colectivos;
     private Tiempo tiempo;
-    private Shop tienda;
+   
 
-    public Persona(String n, Colectivo[] colColectivos, Parque unParque, Tiempo t, Shop tiendita) {
+    public Persona(String n, Colectivo[] colColectivos, Parque unParque, Tiempo t) {
         this.setName(n);
         this.colectivos = colColectivos;
         this.parque = unParque;
         this.tiempo = t;
-        this.tienda = tiendita;
+       
     }
 
     public void run() {
-       // Random r = new Random();
-       // boolean porCole = r.nextBoolean();
-       boolean porCole=true;
- //--------------------------------------------------------------------------------------- no hace falta poner que solo haga actividades si ingreso??
+        Random r = new Random();
+        boolean porCole = r.nextBoolean();
+       //boolean porCole=true;
+ 
         if (porCole) {
             System.out.println(Thread.currentThread().getName().toString()
                     + " se dirige a la fila del colectivo");
@@ -55,17 +55,9 @@ public class Persona extends Thread {
                 System.out.println(Thread.currentThread().getName().toString() + " accede de manera particular"); 
             }
         }
-/* 
-        Random r7 = new Random();
-        boolean pasaPorShop = r7.nextBoolean();
 
-        if (pasaPorShop) {
-            try {
-                tienda.comprar();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        
+ 
 
         // se cambia el eleccion aleatorio hasta que un numero salga (6) que determine
         // que ya se quiere ir
@@ -76,14 +68,15 @@ public class Persona extends Thread {
             Random r4 = new Random();
             Random r5 = new Random();
             Random r6 = new Random();
-
-          //  int eleccionActividad = r6.nextInt(6);
-          int eleccionActividad = 2; 
+            
+           
+          //int eleccionActividad = 2; 
+           int eleccionActividad = r6.nextInt(7);
             int eleccionResto = 0, ladoTirolesa = 0, eleccionGomon = 0,
                     eleccionTransporte = 0;
 
             while (tiempo.verificarHora()) { // Verifica si puede realizar alguna actividad
-
+               
                 switch (eleccionActividad) { // estructura switch para que solo genere el atributo aleatorio que le
                                              // corresponda
                     case 2:
@@ -103,6 +96,7 @@ public class Persona extends Thread {
                         // numero random para la eleccion del tipo de gomon
                         eleccionGomon = r5.nextInt(2) + 1;
                         break;
+                     
                 }
                 try {
                     parque.realizarActividad(eleccionActividad, this, eleccionResto, ladoTirolesa, eleccionTransporte,
@@ -112,11 +106,11 @@ public class Persona extends Thread {
                     e.printStackTrace();
                 }
 
-           //     eleccionActividad = r6.nextInt(6);
+           eleccionActividad = r6.nextInt(6);
             }
 
         }
-*/
+
         System.out.println(Thread.currentThread().getName().toString() + "se va del parque");
     }
 }

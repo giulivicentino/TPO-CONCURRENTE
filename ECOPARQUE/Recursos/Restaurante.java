@@ -54,7 +54,7 @@ public class Restaurante {
 
     }
 
-    public synchronized void pedirAlmuerzo(Persona personita) throws InterruptedException {
+    public  void pedirAlmuerzo(Persona personita) throws InterruptedException {
 
         if (t.permisoRealizarActividad()) {
             if (!personas.get(personita)[0]) { // verifica si la persona ya almorzó
@@ -72,7 +72,7 @@ public class Restaurante {
 
 }
 
-    public synchronized void pedirMerienda(Persona personita) throws InterruptedException {
+    public void pedirMerienda(Persona personita) throws InterruptedException {
         if (t.verificarHora()) {
             if (!personas.get(personita)[1]) { // verifica si la persona ya merendó
                 try {

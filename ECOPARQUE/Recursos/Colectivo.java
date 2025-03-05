@@ -33,14 +33,14 @@ public class Colectivo {
         boolean subio=false;
         if (t.verificarIngreso()) {
             try {
-                if(cantidadEnCole+1 == capacidadCole){
-                    puedeSubir=false;
-                }
-                while (!puedeSubir) { // no sube si esta lleno o si esta en viaje
+                while (!puedeSubir ) { // no sube si esta lleno o si esta en viaje
                     this.wait();
                 }
-                
+               
                 cantidadEnCole++;
+                 if(cantidadEnCole==capacidadCole){
+                    puedeSubir=false;
+                }
                 subio = true;
                 System.out.println(VERDE+"```` INGRESO POR COLECTIVO "+id +" ```` \n"+"La persona " + Thread.currentThread().getName() + "se SUBE al colectivo , cantidad en cole: "+cantidadEnCole+RESET);
             } catch (InterruptedException ex) {
@@ -54,11 +54,7 @@ public class Colectivo {
     public synchronized void bajarCole(boolean subio) throws InterruptedException {
         if (subio) {
             cantidadEnCole--;
-            if (cantidadEnCole==0) {
-                puedeSubir=true;
-                System.out.println("SOY EL ULTIMO que baajaa, AVISO QUE AHORA HAY COLE NUEVOOO");
-                
-            }
+            
             System.out.println(ROJO+"```` INGRESO POR COLECTIVO "+id +" ```` \n" + "La persona " + Thread.currentThread().getName()+ "se BAJA del colectivo,  cantidad en cole: " + cantidadEnCole+RESET);
             this.notifyAll(); // "actualiza" a los que esperaban
         }
@@ -69,15 +65,15 @@ public class Colectivo {
         System.out.println(" ..... COLECTIVO "+id +"  EN VIAJE .....");
     }
 
-/* 
+
     public synchronized void vueltaCole() throws InterruptedException {
         while (cantidadEnCole != 0) { // espera a que se bajen todos para "reiniciar"
             this.wait();
         }
-        enViaje=false;
+        puedeSubir=true;
         System.out.println(" ..... COLECTIVO "+id +" VUELVE EXITOSAMENTE .....");
         this.notifyAll();
     }
-*/
+
 
 }

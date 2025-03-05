@@ -15,10 +15,13 @@ public class Cajero extends Thread {
 
     public void run() {
         System.out.println(NARANJA + ".... SHOP .... Cajero " + id + " esta listo" + RESET);
-        try {
-            tienda.atender();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (true) {
+            try {
+                System.out.println("atiendoo");
+                tienda.atender();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
     }

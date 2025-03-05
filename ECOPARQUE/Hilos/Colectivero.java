@@ -16,10 +16,9 @@ public class Colectivero extends Thread {
             while (t.verificarIngreso()) {
                
                 Thread.sleep(4500); // cada 15 minutos pasa un cole
-                 System.out.println("ARRANCAHA CHOFEREEEEEEE");
                  cole.arrancarCole();
-                //Thread.sleep(3000); //10 minutos de viaje
-                //cole.vueltaCole();
+                Thread.sleep(3000); //10 minutos de viaje
+                cole.vueltaCole();
                 
             }
         } catch (Exception e) {
