@@ -1,5 +1,4 @@
 package Recursos;
-import java.util.Random;
 
 import Hilos.Persona;
 
@@ -7,13 +6,10 @@ public class Parque {
     // contiene todas las actividades
     private NadoDelfines pile;
     private Restaurante[] resto;
-    private Restaurante restaurante; 
     private Laguna laguna;
     private MundoAventura ma;
     private CarreraGomones cg;
     private FaroMirador fa;
-    private Random r = new Random();
-    private int comidaResto; 
     private Shop tienda;
     // el reloj
 
@@ -75,6 +71,20 @@ public class Parque {
                             }
                             resto[1].salirRestaurante();
                             break;
+                        case 3:
+                            resto[2].entraRestaurante(visitante, eleccionComida);
+                            Thread.sleep(500);
+                            switch (eleccionComida) {
+                                case 1:
+                                    resto[2].pedirAlmuerzo(visitante);
+                                    break;
+
+                                case 2:
+                                    resto[2].pedirMerienda(visitante);
+                                    break;
+                            }
+                            resto[2].salirRestaurante();
+                            break;
                     }
                 } catch (Exception e) {
                 }
@@ -98,6 +108,7 @@ public class Parque {
                             break;
                     }
                     ma.usarCuerda();
+                    Thread.sleep(600);
                     ma.saltar();
 
                 } catch (Exception e) {
@@ -114,7 +125,7 @@ public class Parque {
                             break;
 
                         case 2:
-                            cg.subirBici(); 
+                            cg.subirBici();
                             Thread.sleep(1800);
                             cg.dejarBici();
                             break;
@@ -160,7 +171,8 @@ public class Parque {
                 } catch (Exception e) {
                 }
                 break;
-                case 6:
+            case 6:
+                // ---------------------SHOP
                 try {
                     tienda.comprar();
                     Thread.sleep(1000);
@@ -169,7 +181,7 @@ public class Parque {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            break;
+                break;
         }
 
     }

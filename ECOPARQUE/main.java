@@ -24,24 +24,23 @@ public class main {
 
         // recursos compartidos
         Tiempo t = new Tiempo(15, 0);
-        
+
         Colectivo[] colColectvos = new Colectivo[2];
-        colColectvos[0] = new Colectivo(t,1);
-        colColectvos[1] = new Colectivo(t,2);
-        
+        colColectvos[0] = new Colectivo(t, 1);
+        colColectvos[1] = new Colectivo(t, 2);
 
         NadoDelfines nd = new NadoDelfines(t);
         Restaurante[] colRestaurantes = new Restaurante[3];
-        colRestaurantes[0] = new Restaurante(1, 2, t);
-        colRestaurantes[1] = new Restaurante(2, 5, t);
-        colRestaurantes[2] = new Restaurante(3, 7, t);
+        colRestaurantes[0] = new Restaurante(1, 7, t);
+        colRestaurantes[1] = new Restaurante(2, 10, t);
+        colRestaurantes[2] = new Restaurante(3, 12, t);
         Laguna laguna = new Laguna(t);
         MundoAventura ma = new MundoAventura(t);
         CarreraGomones cg = new CarreraGomones(t);
         FaroMirador fa = new FaroMirador(t);
-        
-        Shop shop = new Shop();
-        Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa,shop);
+
+        Shop shop = new Shop(t);
+        Parque ecoParque = new Parque(nd, colRestaurantes, laguna, ma, cg, fa, shop);
 
         // hilos personas
         Persona[] p = new Persona[100];
@@ -59,9 +58,8 @@ public class main {
         ControlFaro cFaro = new ControlFaro(fa);
         Cajero cajero1 = new Cajero(1, shop);
         Cajero cajero2 = new Cajero(2, shop);
-        Colectivero chofer1 = new Colectivero(colColectvos[0],t);
-        Colectivero chofer2 = new Colectivero(colColectvos[1],t);
-        
+        Colectivero chofer1 = new Colectivero(colColectvos[0], t);
+        Colectivero chofer2 = new Colectivero(colColectvos[1], t);
 
         for (int i = 0; i < asistentesSnorkel.length; i++) {
             asistentesSnorkel[i] = new AsistenteSnorkel(laguna);
@@ -83,14 +81,11 @@ public class main {
         cajero2.start();
         chofer1.start();
         chofer2.start();
-       
+
         // comienzo de hilos personas
         for (int i = 0; i < p.length; i++) {
             p[i].start();
         }
-
-
-
 
     }
 

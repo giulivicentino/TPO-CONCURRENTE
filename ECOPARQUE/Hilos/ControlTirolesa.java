@@ -2,7 +2,7 @@ package Hilos;
 
 import Recursos.MundoAventura;
 
-public class ControlTirolesa extends Thread{
+public class ControlTirolesa extends Thread{  //Hilo control de tirolesa utilizada en Mundo Aventura
     private MundoAventura ma; 
     
     public ControlTirolesa(MundoAventura m){

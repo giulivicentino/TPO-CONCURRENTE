@@ -2,7 +2,7 @@ package Hilos;
 
 import Recursos.FaroMirador;
 
-public class ControlFaro extends Thread{
+public class ControlFaro extends Thread{  //Hilo control faro utilizado en faro-mirador
     private FaroMirador fa; 
     
     public ControlFaro(FaroMirador farito){

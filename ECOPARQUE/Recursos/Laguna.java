@@ -1,4 +1,5 @@
 package Recursos;
+
 import java.util.concurrent.Semaphore;
 
 public class Laguna { // recurso compartido
@@ -13,8 +14,8 @@ public class Laguna { // recurso compartido
     }
 
     public void solicitarEquipo() {
-        if(t.permisoRealizarActividad()){ //15 minutos antes del cierre es el tiempo limite para utilizar la laguna
-            verificarEquipo.release();
+        if (t.permisoRealizarActividad()) { // 15 minutos antes del cierre es el tiempo limite para utilizar la laguna
+            verificarEquipo.release(); // cliente solicita equipo
             try {
                 Thread.sleep(500);
                 devolverEquipo();
@@ -25,16 +26,27 @@ public class Laguna { // recurso compartido
     }
 
     public void otorgarEquipo() throws InterruptedException {
-            verificarEquipo.acquire();
+        verificarEquipo.acquire(); // asistente verifica que haya equipo para dar a cliente
+        if (t.permisoRealizarActividad()) {
             equipo.acquire();
-            System.out.println("/// LAGUNA /// \n"+"equipo otorgado");
+            System.out.println("/// LAGUNA /// \n" + "equipo otorgado");
             equipoOtorgado.release();
+        } else {
+            equipoOtorgado.release();
+        }
     }
 
     public void devolverEquipo() throws InterruptedException {
-            equipoOtorgado.acquire();
-            System.out.println("/// LAGUNA /// \n"+"La persona " + Thread.currentThread().getName() + " terminó de usar la laguna");
-            equipo.release();
+        equipoOtorgado.acquire();
+        if (t.permisoRealizarActividad()) {
+            System.out.println(
+                    "/// LAGUNA /// \n" + "La persona " + Thread.currentThread().getName()
+                            + " terminó de usar la laguna");
+            equipo.release(); // cliente devuelve equipo
+        } else {
+            equipoOtorgado.release();
+        }
+
     }
 
 }

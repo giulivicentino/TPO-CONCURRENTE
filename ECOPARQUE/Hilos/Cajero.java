@@ -17,7 +17,6 @@ public class Cajero extends Thread {
         System.out.println(NARANJA + ".... SHOP .... Cajero " + id + " esta listo" + RESET);
         while (true) {
             try {
-                System.out.println("atiendoo");
                 tienda.atender();
             } catch (InterruptedException e) {
                 e.printStackTrace();
