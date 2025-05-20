@@ -23,7 +23,7 @@ public class main {
     public static void main(String[] args) {
 
         // recursos compartidos
-        Tiempo t = new Tiempo(15, 0);
+        Tiempo t = new Tiempo(16, 0);
 
         Colectivo[] colColectvos = new Colectivo[2];
         colColectvos[0] = new Colectivo(t, 1);
@@ -53,7 +53,8 @@ public class main {
         ControlTiempo tiempo = new ControlTiempo(t, nd);
         ControlPileta cp = new ControlPileta(nd);
         AsistenteSnorkel[] asistentesSnorkel = new AsistenteSnorkel[2];
-        ControlTirolesa ct = new ControlTirolesa(ma);
+        ControlTirolesa ct = new ControlTirolesa(ma, 'e');
+        ControlTirolesa ct2 = new ControlTirolesa(ma, 'o');
         ControlTren ctren = new ControlTren(cg);
         ControlFaro cFaro = new ControlFaro(fa);
         Cajero cajero1 = new Cajero(1, shop);
@@ -73,7 +74,8 @@ public class main {
             asistentesSnorkel[i].start(); // asistentes snorkel
         }
 
-        ct.start(); // control tirolesa
+        ct.start(); // control tirolesa Este
+        ct2.start(); // control tirolesa Oeste
         ctren.start(); // control tren
         cFaro.start(); // control faro
         tiempo.start(); // control tiempo
