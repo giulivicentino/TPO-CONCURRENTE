@@ -37,7 +37,7 @@ public class Persona extends Thread {
                     boolean subio = unCole.subirCole();
                     if (subio) {
                         Thread.sleep(3000); // dura 10 minutos el viaje
-                        unCole.bajarCole(subio);
+                        unCole.bajarCole();
                         System.out.println(Thread.currentThread().getName().toString()
                                 + " llega a destino con el tour");
                     }
@@ -53,7 +53,7 @@ public class Persona extends Thread {
                 System.out.println(Thread.currentThread().getName().toString() + " accede de manera particular");
             }
         }
-
+        
         // se cambia el eleccion aleatorio hasta que un numero salga (6) que determine
         // que ya se quiere ir
 
@@ -106,7 +106,6 @@ public class Persona extends Thread {
             }
 
         }
-
         System.out.println(Thread.currentThread().getName().toString() + "se va del parque");
     }
 }
