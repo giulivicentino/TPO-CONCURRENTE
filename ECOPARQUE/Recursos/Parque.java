@@ -11,7 +11,6 @@ public class Parque {
     private CarreraGomones cg;
     private FaroMirador fa;
     private Shop tienda;
-    // el reloj
 
     public Parque(NadoDelfines p, Restaurante[] colRestaurantes, Laguna l, MundoAventura m,
             CarreraGomones c, FaroMirador faro, Shop tiendita) {
@@ -38,13 +37,12 @@ public class Parque {
                 laguna.solicitarEquipo();
                 break;
 
-            case 2:
-                // -------------------RESTAURANTE
+            case 2: // -------------------RESTAURANTE
                 try {
                     switch (eleccionResto) {
                         case 1:
                             resto[0].entraRestaurante(visitante, eleccionComida);
-                            Thread.sleep(500);
+
                             switch (eleccionComida) {
                                 case 1:
                                     resto[0].pedirAlmuerzo(visitante);
@@ -54,6 +52,7 @@ public class Parque {
                                     resto[0].pedirMerienda(visitante);
                                     break;
                             }
+                            Thread.sleep(500);
                             resto[0].salirRestaurante();
                             break;
 
@@ -90,8 +89,8 @@ public class Parque {
                 }
                 ;
                 break;
-            case 3:
-                // -------------------MUNDO AVENTURA
+
+            case 3: // -------------------MUNDO AVENTURA
 
                 try {
 
@@ -115,8 +114,7 @@ public class Parque {
                 }
                 break;
 
-            case 4:
-                // -------------------CARRERA DE GOMONES
+            case 4: // -------------------CARRERA DE GOMONES
 
                 try {
                     switch (eleccionTransporte) {
@@ -126,8 +124,6 @@ public class Parque {
 
                         case 2:
                             cg.subirBici();
-                            Thread.sleep(1800);
-                            cg.dejarBici();
                             break;
                     }
                 } catch (Exception e) {
@@ -136,19 +132,11 @@ public class Parque {
                 try {
                     switch (eleccionGomon) {
                         case 1: // caso gomon doble
-                            if (cg.elegirGomon(true)) {
-                                cg.carrera();
-                                cg.devolverGomon(true);
-
-                            } else {
-                                Thread.sleep(4000);
-                            }
+                            cg.carrera(cg.elegirGomon(true), true);
                             break;
 
                         case 2: // caso gomon simple
-                            cg.elegirGomon(false);
-                            cg.carrera();
-                            cg.devolverGomon(false);
+                            cg.carrera(cg.elegirGomon(false), false);
                             break;
                     }
 
@@ -156,8 +144,7 @@ public class Parque {
                 }
                 break;
 
-            case 5:
-                // -------------------FARO MIRADOR
+            case 5: // -------------------FARO MIRADOR
                 try {
                     fa.ingresar();
                     fa.avisaControl(); // despierto al control para que me diga a cual voy
@@ -171,8 +158,8 @@ public class Parque {
                 } catch (Exception e) {
                 }
                 break;
-            case 6:
-                // ---------------------SHOP
+
+            case 6: // ---------------------SHOP
                 try {
                     tienda.comprar();
                     Thread.sleep(1000);

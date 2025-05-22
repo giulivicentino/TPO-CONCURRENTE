@@ -94,7 +94,7 @@ public class NadoDelfines {
                 // una vez que se vacían todas las piletas, se permite el ingreso nuevamente
                 colEntrada.signalAll();
             } else {
-                colFuncion.signalAll();
+                colFuncion.signal();
             }
         } catch (Exception e) {
         } finally {
@@ -133,7 +133,7 @@ public class NadoDelfines {
             // función
             cambioPile = 1;
             cantActualPile = 0;
-            colFuncion.signalAll();
+            colFuncion.signal();
 
         } catch (Exception e) {
         } finally {
