@@ -17,7 +17,10 @@ public class Colectivero extends Thread {
                
                 Thread.sleep(4500); // cada 15 minutos pasa un cole
                  cole.arrancarCole();
-                Thread.sleep(3000); //10 minutos de viaje
+                Thread.sleep(3000); //10 minutos de viaje de ida al parque
+                
+                cole.terminaViaje();
+                Thread.sleep(3000); //10 minutos de viaje de vuelta a la parada
                 cole.vueltaCole();
                 
             }
