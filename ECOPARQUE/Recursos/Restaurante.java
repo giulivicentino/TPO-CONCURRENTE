@@ -36,7 +36,7 @@ public class Restaurante {
                             + "- , cantActual: " + cantActualResto + " max: " + capacidad + RESET);
 
                 }
-                this.notifyAll();
+                this.notify();
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -44,26 +44,23 @@ public class Restaurante {
         }
     }
 
-    public synchronized void pedirAlmuerzo(Persona personita) {
+    public void pedirAlmuerzo(Persona personita) {
         if (t.permisoRealizarActividad()) {
             if (!personas.get(personita)[0]) { // verifica si la persona ya almorzó
                 System.out.println(ROJO + ".... RESTAURANTE .... \n" +
                         Thread.currentThread().getName() + " se encuentra almorzando en: " + id + RESET);
                 personas.get(personita)[0] = true;
             }
-            this.notifyAll();
         }
-        // salirRestaurante();
     }
 
-    public synchronized void pedirMerienda(Persona personita) {
+    public  void pedirMerienda(Persona personita) {
         if (t.permisoRealizarActividad()) {
             if (!personas.get(personita)[1]) { // verifica si la persona ya merendó
                 System.out.println(ROJO + ".... RESTAURANTE .... \n" + Thread.currentThread().getName()
                         + " merendando ------- EN: " + id + RESET);
                 personas.get(personita)[1] = true;
             }
-            this.notifyAll();
         }
     }
 
@@ -73,7 +70,7 @@ public class Restaurante {
             System.out.println(ROJO + ".... RESTAURANTE .... \n" + Thread.currentThread().getName()
                     + " ME FUI de RESTO -" + id + "- , cantActual: "
                     + cantActualResto + " max: " + capacidad + RESET);
-            this.notifyAll();
+            this.notify();
         } else {
             if (cantActualResto > 0) {
                 cantActualResto--;
@@ -81,7 +78,7 @@ public class Restaurante {
                         + " ME FUI de RESTO -" + id + "- , cantActual: "
                         + cantActualResto + " max: " + capacidad + RESET);
             }
-            this.notifyAll();
+            this.notify();
         }
     }
 

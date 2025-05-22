@@ -67,9 +67,10 @@ private Condition esperaVolver = lockCole.newCondition(); //para que el colectiv
             }
             cantidadEnCole--;
 
-            System.out.println(ROJO + "```` INGRESO POR COLECTIVO " + id + " ```` \n" + "La persona "
+            System.out.println(VERDE + "```` INGRESO POR COLECTIVO " + id + " ```` \n" + "La persona "
                     + Thread.currentThread().getName() + "se BAJA del colectivo,  cantidad en cole: " + cantidadEnCole
                     + RESET);
+                    
                     if(cantidadEnCole == 0){ // si se bajaron todos
                         esperaVolver.signal(); // despierta al colectivero
                     System.out.println("El colectivo " + id + " se encuentra vacio, puede volver a la parada");
@@ -92,7 +93,20 @@ private Condition esperaVolver = lockCole.newCondition(); //para que el colectiv
             lockCole.unlock();
         }
     }
-
+ public void terminaViaje() {
+        try {
+             lockCole.lock();
+            puedeBajar = true; // ya paso el tiempo en el colectivero
+            esperaBajar.signalAll(); // despierta a los que estaban esperando para bajar
+        
+            while (cantidadEnCole != 0) { // espera a que se bajen todos para "reiniciar"
+           esperaVolver.await();
+        }
+        } catch (Exception e) {
+        } finally {
+            lockCole.unlock();
+        }
+    }
     public void vueltaCole() throws InterruptedException {
          try {
             lockCole.lock();
@@ -109,19 +123,6 @@ private Condition esperaVolver = lockCole.newCondition(); //para que el colectiv
     }
 
 
-    public void terminaViaje() {
-        try {
-             lockCole.lock();
-            puedeBajar = true; // ya paso el tiempo en el colectivero
-            esperaBajar.signalAll(); // despierta a los que estaban esperando para bajar
-        
-            while (cantidadEnCole != 0) { // espera a que se bajen todos para "reiniciar"
-           esperaVolver.await();
-        }
-        } catch (Exception e) {
-        } finally {
-            lockCole.unlock();
-        }
-    }
+   
 
 }
